@@ -1,0 +1,17 @@
+Options -Indexes
+DirectoryIndex index.php
+
+# Protect sensitive files
+<FilesMatch "\.(env|log|sql|json|lock|md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security headers
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+
+# Remove trailing slash from non-directory URLs
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [R=301,L]

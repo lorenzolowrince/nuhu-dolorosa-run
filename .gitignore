@@ -1,0 +1,24 @@
+# Environment secrets — never commit real credentials
+.env
+
+# Composer dependencies — restore with `composer install`
+/vendor/
+
+# Local Claude Code permission grants (machine/session-specific)
+.claude/settings.local.json
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Debug / diagnostic scripts — not for version control
+admin/admindebug.php
+admin/fixadmin.php
+admin/logindebug.php
+public/dbcheck.php
+public/debug.php
+public/langdebug.php
+public/structuredebug.php
+public/stripe-keycheck.php
+public/stripe-webhook-test.php
+public/test-mail.php

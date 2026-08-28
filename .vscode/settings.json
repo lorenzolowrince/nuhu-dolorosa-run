@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "*.sql": "sql"
+    },
+    "[sql]": {
+        "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
+    },
+    "sql.linter.driver": "MySQL"
+}

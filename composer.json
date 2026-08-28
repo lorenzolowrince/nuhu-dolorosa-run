@@ -1,0 +1,17 @@
+{
+    "name": "nuhu-dolorosa/charity-run-portal",
+    "description": "Online Registration Portal for Charity Run Nuhu Dolorosa",
+    "type": "project",
+    "require": {
+        "php": "^8.0",
+        "stripe/stripe-php": "^13.0",
+        "phpmailer/phpmailer": "^6.8"
+    },
+    "autoload": {
+        "classmap": ["app/"]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
