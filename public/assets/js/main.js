@@ -13,6 +13,19 @@
         });
     }
 
+    // --- Back to top button ---
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+        const toggleBackToTop = () => {
+            backToTop.classList.toggle('show', window.scrollY > 400);
+        };
+        window.addEventListener('scroll', toggleBackToTop, { passive: true });
+        toggleBackToTop();
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
     // --- Smooth scroll for anchor links ---
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {

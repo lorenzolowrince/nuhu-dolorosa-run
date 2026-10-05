@@ -141,6 +141,7 @@ return [
     'footer.rights'     => 'Hak cipta terpelihara.',
     'footer.secured_by' => 'Dilindungi oleh',
     'footer.payments'   => 'Pembayaran oleh',
+    'footer.back_to_top' => 'Kembali ke atas',
 
     // ---- Registration Form ----
     'reg.page_title'    => 'Pendaftaran Acara',

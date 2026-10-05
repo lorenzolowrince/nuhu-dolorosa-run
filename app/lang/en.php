@@ -141,6 +141,7 @@ return [
     'footer.rights'     => 'All rights reserved.',
     'footer.secured_by' => 'Secured by',
     'footer.payments'   => 'Payments by',
+    'footer.back_to_top' => 'Back to top',
 
     // ---- Registration Form ----
     'reg.page_title'    => 'Event Registration',

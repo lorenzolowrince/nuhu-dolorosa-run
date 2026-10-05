@@ -66,6 +66,13 @@
     </div>
 </footer>
 
+<!-- Floating back-to-top button -->
+<button id="back-to-top" class="back-to-top" type="button"
+        title="<?= __('footer.back_to_top') ?>"
+        aria-label="<?= __('footer.back_to_top') ?>">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Custom JS -->
