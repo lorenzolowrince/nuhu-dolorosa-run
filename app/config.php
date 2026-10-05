@@ -6,6 +6,9 @@ declare(strict_types=1);
 // Loads .env and defines all constants
 // ============================================================
 
+// All dates/times are Malaysia time (UTC+8); the MySQL session is matched in database.php
+date_default_timezone_set('Asia/Kuala_Lumpur');
+
 define('BASE_PATH',   dirname(__DIR__));
 define('APP_PATH',    BASE_PATH . '/app');
 define('PUBLIC_PATH',
