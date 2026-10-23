@@ -1,82 +1,99 @@
+</main>
+
 <!-- Footer -->
 <footer class="site-footer">
     <div class="container">
-        <div class="row gy-4">
+        <div class="row gy-5">
             <div class="col-lg-4">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <img src="<?= APP_URL ?>/assets/images/nddk-logo.png" alt="NDDK Logo" class="brand-logo-img">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <img src="<?= APP_URL ?>/assets/images/web/nddk-logo-160.png" alt="" width="52" height="52" class="brand-logo-img footer-logo">
                     <div>
-                        <div class="text-white fw-700 fs-6">Nuhu Dolorosa</div>
-                        <div class="text-warning fw-600">Run For Hope</div>
+                        <div class="footer-brand">Nuhu Dolorosa</div>
+                        <div class="footer-brand-sub">Run For Hope</div>
                     </div>
                 </div>
-                <p class="text-light opacity-75">
-                    <?= __('footer.tagline') ?>
-                </p>
+                <p class="footer-tagline"><?= __('footer.tagline') ?></p>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="https://www.facebook.com/profile.php?id=61562314834879" target="_blank" rel="noopener" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="https://www.instagram.com/nuhudolorosa/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://wa.me/60198834954" target="_blank" rel="noopener" class="social-btn" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+                </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <h6 class="text-warning fw-700 mb-3 text-uppercase"><?= __('footer.links') ?></h6>
+                <h2 class="footer-heading"><?= __('footer.links') ?></h2>
                 <ul class="list-unstyled footer-links">
                     <li><a href="<?= APP_URL ?>/#about"><?= __('footer.about') ?></a></li>
                     <li><a href="<?= APP_URL ?>/#categories"><?= __('footer.categories') ?></a></li>
+                    <li><a href="<?= APP_URL ?>/#how"><?= __('ui.how') ?></a></li>
                     <li><a href="<?= APP_URL ?>/#contact"><?= __('nav.contact') ?></a></li>
                     <li><a href="<?= APP_URL ?>/register.php"><?= __('footer.register') ?></a></li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-4">
-                <h6 class="text-warning fw-700 mb-3 text-uppercase"><?= __('footer.event_info') ?></h6>
-                <ul class="list-unstyled footer-links">
-                    <li><i class="fas fa-calendar-alt me-2 text-warning"></i><?= __('hero.event_date') ?></li>
-                    <li><i class="fas fa-clock me-2 text-warning"></i><?= __('footer.flagoff') ?></li>
+                <h2 class="footer-heading"><?= __('footer.event_info') ?></h2>
+                <ul class="list-unstyled footer-links footer-info">
+                    <li><i class="fas fa-calendar-alt" aria-hidden="true"></i><span><?= __('hero.event_date') ?></span></li>
+                    <li><i class="fas fa-clock" aria-hidden="true"></i><span><?= __('footer.flagoff') ?></span></li>
                     <li>
-                        <i class="fas fa-map-marker-alt me-2 text-warning"></i>
-                        <a href="https://www.google.com/maps/search/St+Anne+Church+Penampang+Baru+Kimanis+Papar+Sabah" target="_blank" rel="noopener" style="color:rgba(255,255,255,.7)">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                        <a href="https://www.google.com/maps/search/St+Anne+Church+Penampang+Baru+Kimanis+Papar+Sabah" target="_blank" rel="noopener">
                             <?= e(getSetting('event_venue')) ?>
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="col-lg-3 col-md-4">
-                <h6 class="text-warning fw-700 mb-3 text-uppercase"><?= __('footer.contact') ?></h6>
-                <ul class="list-unstyled footer-links">
-                    <li><i class="fas fa-envelope me-2 text-warning"></i><?= e(getSetting('contact_email')) ?></li>
-                    <li><i class="fas fa-phone me-2 text-warning"></i><?= e(getSetting('contact_name', 'Jessel')) ?>: <?= e(getSetting('contact_phone')) ?></li>
-                    <li><i class="fas fa-phone me-2 text-warning"></i><?= e(getSetting('contact_name2', 'Prisca')) ?>: <?= e(getSetting('contact_phone2', '017-2574954')) ?></li>
+                <h2 class="footer-heading"><?= __('footer.contact') ?></h2>
+                <ul class="list-unstyled footer-links footer-info">
+                    <li><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:<?= e(getSetting('contact_email')) ?>"><?= e(getSetting('contact_email')) ?></a></li>
+                    <li><i class="fas fa-phone" aria-hidden="true"></i><span><?= e(getSetting('contact_name', 'Jessel')) ?>: <a href="tel:<?= preg_replace('/[^+0-9]/', '', getSetting('contact_phone')) ?>"><?= e(getSetting('contact_phone')) ?></a></span></li>
+                    <li><i class="fas fa-phone" aria-hidden="true"></i><span><?= e(getSetting('contact_name2', 'Prisca')) ?>: <a href="tel:<?= preg_replace('/[^+0-9]/', '', getSetting('contact_phone2', '0172574954')) ?>"><?= e(getSetting('contact_phone2', '017-2574954')) ?></a></span></li>
                 </ul>
-                <div class="mt-3 d-flex gap-2">
-                    <a href="https://www.facebook.com/profile.php?id=61562314834879" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.instagram.com/nuhudolorosa/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/60198834954" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
-                </div>
             </div>
         </div>
-        <hr class="border-secondary mt-4">
-        <div class="row align-items-center">
-            <div class="col-md-6 text-center text-md-start">
-                <p class="text-light opacity-50 mb-0 small">
-                    &copy; <?= date('Y') ?> <?= e(getSetting('event_name')) ?>. <?= __('footer.rights') ?>
-                </p>
-            </div>
-            <div class="col-md-6 text-center text-md-end">
-                <p class="text-light opacity-50 mb-0 small">
-                    <?= __('footer.secured_by') ?> <i class="fas fa-shield-alt text-warning"></i> SSL
-                </p>
-            </div>
+        <div class="footer-bottom">
+            <p class="mb-0">
+                &copy; <?= date('Y') ?> <?= e(getSetting('event_name')) ?>. <?= __('footer.rights') ?>
+            </p>
+            <p class="mb-0 d-flex align-items-center gap-3">
+                <span><?= __('footer.secured_by') ?> <i class="fas fa-shield-alt text-warning" aria-hidden="true"></i> SSL</span>
+                <a href="<?= APP_URL ?>/admin/login.php" class="footer-admin"><i class="fas fa-lock me-1" aria-hidden="true"></i><?= __('ui.admin') ?></a>
+            </p>
         </div>
     </div>
 </footer>
+
+<!-- Image viewer (shared by all public pages; opened via openLightbox(src)) -->
+<dialog id="lightbox" class="lightbox" aria-label="Image viewer">
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="<?= __('ui.close') ?>">
+        <i class="fas fa-times" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="lightbox-nav lightbox-prev" data-lightbox-step="-1" aria-label="<?= __('ui.prev') ?>" hidden>
+        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+    </button>
+    <figure class="lightbox-figure">
+        <img id="lightboxImg" src="" alt="">
+        <figcaption id="lightboxCaption"></figcaption>
+    </figure>
+    <button type="button" class="lightbox-nav lightbox-next" data-lightbox-step="1" aria-label="<?= __('ui.next') ?>" hidden>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+    </button>
+</dialog>
+
+<!-- Toast notifications (copy confirmations etc.) -->
+<div class="site-toast" id="siteToast" role="status" aria-live="polite" data-copied="<?= e(__('ui.copied')) ?>"></div>
 
 <!-- Floating back-to-top button -->
 <button id="back-to-top" class="back-to-top" type="button"
         title="<?= __('footer.back_to_top') ?>"
         aria-label="<?= __('footer.back_to_top') ?>">
-    <i class="fas fa-arrow-up"></i>
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
 </button>
 
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Custom JS -->
-<script src="<?= APP_URL ?>/assets/js/main.js"></script>
+<script src="<?= APP_URL ?>/assets/js/main.js?v=2"></script>
 
 <!-- ============================================================ -->
 <!-- BACKGROUND MUSIC -->

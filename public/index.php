@@ -13,6 +13,8 @@ $categories       = getActiveCategories();
 $registrationOpen = getSetting('registration_open', '1') === '1';
 $eventDate        = getSetting('event_date', '2026-12-19');
 $eventVenue       = getSetting('event_venue');
+$mapUrl           = 'https://www.google.com/maps/search/St+Anne+Church+Penampang+Baru+Kimanis+Papar+Sabah';
+$img              = APP_URL . '/assets/images';
 
 include PUBLIC_PATH . '/includes/header.php';
 ?>
@@ -20,174 +22,103 @@ include PUBLIC_PATH . '/includes/header.php';
 <!-- ============================================================ -->
 <!-- HERO SECTION -->
 <!-- ============================================================ -->
-<section class="hero-section" id="hero">
-    <div class="hero-overlay"></div>
-    <canvas id="hero-canvas"
-            onclick="openLightbox('<?= APP_URL ?>/assets/images/hero-bg.jpeg')"
-            title="Click to view the Groundbreaking Ceremony photo"></canvas>
-    <div class="hero-photo-hint">
-        <i class="fas fa-search-plus me-1"></i> View ceremony photo
-    </div>
-    <div class="hero-particles" id="particles"></div>
-    <div class="container position-relative">
-        <div class="row align-items-center min-vh-hero">
-            <div class="col-lg-8">
-                <div class="hero-badge mb-3">
-                    <i class="fas fa-heart me-1"></i> <?= __('hero.badge') ?>
+<section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+    <div class="container hero-inner">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-7">
+                <div class="hero-badge">
+                    <i class="fas fa-heart" aria-hidden="true"></i> <?= __('hero.badge') ?>
                 </div>
-                <h1 class="hero-title">
+                <h1 class="hero-title" id="hero-title">
                     Run<br>
-                    <span class="text-warning">For Hope</span>
+                    <span class="hero-title-accent">For Hope</span>
                 </h1>
-                <p class="hero-event-name">Nuhu Dolorosa Ultra Trail 3.0 Charity Run<br><span style="font-size:0.55em;opacity:0.85;letter-spacing:.02em;">(7KM, 15KM &amp; 43KM)</span></p>
-                <div class="hero-meta d-flex flex-wrap gap-3 mb-4">
-                    <span class="meta-chip"><i class="fas fa-calendar-alt me-1"></i> <?= __('hero.event_date') ?></span>
-                    <a href="https://www.google.com/maps/search/St+Anne+Church+Penampang+Baru+Kimanis+Papar+Sabah" target="_blank" rel="noopener" class="meta-chip" style="text-decoration:none;">
-                        <i class="fas fa-map-marker-alt me-1"></i> <?= e($eventVenue) ?>
-                    </a>
-                    <span class="meta-chip"><i class="fas fa-clock me-1"></i> <?= __('hero.flagoff') ?></span>
-                </div>
-
-                <!-- Countdown Timer -->
-                <div class="countdown-box mb-4" id="countdown">
-                    <div class="countdown-unit">
-                        <span class="count-num" id="days">00</span>
-                        <span class="count-label"><?= __('countdown.days') ?></span>
-                    </div>
-                    <div class="countdown-sep">:</div>
-                    <div class="countdown-unit">
-                        <span class="count-num" id="hours">00</span>
-                        <span class="count-label"><?= __('countdown.hours') ?></span>
-                    </div>
-                    <div class="countdown-sep">:</div>
-                    <div class="countdown-unit">
-                        <span class="count-num" id="minutes">00</span>
-                        <span class="count-label"><?= __('countdown.minutes') ?></span>
-                    </div>
-                    <div class="countdown-sep">:</div>
-                    <div class="countdown-unit">
-                        <span class="count-num" id="seconds">00</span>
-                        <span class="count-label"><?= __('countdown.seconds') ?></span>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-wrap gap-3">
+                <p class="hero-event-name">
+                    Nuhu Dolorosa Ultra Trail 3.0 Charity Run
+                    <span class="hero-distances">7KM · 15KM · 43KM</span>
+                </p>
+                <ul class="hero-meta">
+                    <li class="meta-chip"><i class="fas fa-calendar-alt" aria-hidden="true"></i> <?= __('hero.event_date') ?></li>
+                    <li class="meta-chip"><i class="fas fa-clock" aria-hidden="true"></i> <?= __('hero.flagoff') ?></li>
+                    <li>
+                        <a href="<?= $mapUrl ?>" target="_blank" rel="noopener" class="meta-chip meta-chip-link">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i> <?= e($eventVenue) ?>
+                        </a>
+                    </li>
+                </ul>
+                <div class="hero-actions">
                     <?php if ($registrationOpen): ?>
                         <a href="<?= APP_URL ?>/register.php" class="btn btn-hero-primary">
-                            <i class="fas fa-pencil-alt me-2"></i> <?= __('hero.register') ?>
+                            <?= __('hero.register') ?> <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
                         </a>
                     <?php else: ?>
                         <button class="btn btn-hero-secondary" disabled>
-                            <i class="fas fa-lock me-2"></i> <?= __('hero.reg_closed') ?>
+                            <i class="fas fa-lock me-2" aria-hidden="true"></i> <?= __('hero.reg_closed') ?>
                         </button>
                     <?php endif; ?>
                     <a href="#categories" class="btn btn-hero-outline">
-                        <i class="fas fa-trophy me-2"></i> <?= __('hero.categories') ?>
+                        <?= __('hero.categories') ?>
                     </a>
                 </div>
             </div>
+
+            <div class="col-lg-5">
+                <!-- Countdown, styled as a race bib -->
+                <div class="race-bib">
+                    <div class="race-bib-top">
+                        <span>Ultra Trail 3.0</span>
+                        <span>19 · 12 · 2026</span>
+                    </div>
+                    <div class="countdown-box" id="countdown" role="timer" aria-live="off">
+                        <div class="countdown-unit">
+                            <span class="count-num" id="days">00</span>
+                            <span class="count-label"><?= __('countdown.days') ?></span>
+                        </div>
+                        <div class="countdown-unit">
+                            <span class="count-num" id="hours">00</span>
+                            <span class="count-label"><?= __('countdown.hours') ?></span>
+                        </div>
+                        <div class="countdown-unit">
+                            <span class="count-num" id="minutes">00</span>
+                            <span class="count-label"><?= __('countdown.minutes') ?></span>
+                        </div>
+                        <div class="countdown-unit">
+                            <span class="count-num" id="seconds">00</span>
+                            <span class="count-label"><?= __('countdown.seconds') ?></span>
+                        </div>
+                    </div>
+                    <div class="race-bib-bottom">
+                        <img src="<?= $img ?>/web/nddk-logo-160.png" alt="" width="40" height="40">
+                        <span>Kimanis, Papar, Sabah</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="hero-wave">
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#fff"/></svg>
-    </div>
+
+    <button type="button" class="hero-photo-btn"
+            onclick="openLightbox('<?= $img ?>/hero-bg.jpeg', this.dataset.caption)"
+            data-caption="Groundbreaking Ceremony — St Anne Church, Penampang Baru">
+        <i class="fas fa-search-plus" aria-hidden="true"></i> <?= __('ui.view_photo') ?>
+    </button>
+
+    <!-- Crocker-range ridgeline with the trail drawn across it -->
+    <svg class="hero-ridge" viewBox="0 0 1440 140" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ridge-back" d="M0,92 L120,70 L210,84 L330,46 L430,74 L560,38 L660,66 L790,30 L900,62 L1010,44 L1120,72 L1240,40 L1340,64 L1440,52 L1440,140 L0,140 Z"/>
+        <path class="ridge-front" d="M0,118 L140,96 L260,110 L380,84 L520,104 L640,80 L770,100 L900,76 L1040,98 L1180,82 L1300,102 L1440,90 L1440,140 L0,140 Z"/>
+        <path class="ridge-trail" d="M0,112 C180,96 260,110 380,90 S620,82 770,96 S1040,76 1180,86 S1360,96 1440,88"/>
+    </svg>
 </section>
 
-<!-- Hero graphic strip — slideshow -->
-<div class="hero-graphic-strip">
-    <div id="heroGraphicCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
-        <div class="carousel-inner">
-
-            <!-- Slide 1: NDDK Logo -->
-            <div class="carousel-item active">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-auto text-center">
-                            <div class="hero-graphic">
-                                <div class="hero-circle-outer">
-                                    <div class="hero-circle-inner">
-                                        <img src="<?= APP_URL ?>/assets/images/nddk-logo.png"
-                                             alt="NDDK Logo"
-                                             class="nddk-logo-click"
-                                             onclick="openLightbox('<?= APP_URL ?>/assets/images/nddk-logo.png')"
-                                             title="Click to enlarge">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nddk-logo-hint">
-                                <i class="fas fa-search-plus me-1"></i> Click to enlarge
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <?php
-            $gallerySlides = [
-                ['event-poster.jpeg', 'Nuhu Dolorosa Ultra Trail 3.0 — Official Event Poster'],
-                ['gallery-1.jpeg',    'Nuhu Dolorosa Ultra Trail 3.0 — Runners in Action'],
-                ['gallery-2.jpeg',    'Shalom Kopivosian — Trail Recce Team'],
-                ['gallery-3.jpeg',    'Shalom Kopivosian — Forest Trail Recce'],
-                ['gallery-4.jpeg',    'Larian Pengharapan — Poster Rasmi (BM)'],
-                ['gallery-5.jpeg',    'Nuhu Dolorosa Ultra Trail 3.0 — Sunset Runners'],
-                ['gallery-6.jpeg',    'Larian Amal Pengharapan — Poster Air Terjun'],
-                ['gallery-7.jpeg',    'Nuhu Dolorosa Ultra Trail 3.0 — Trail Runners'],
-                ['gallery-8.jpeg',    'Nuhu Dolorosa Ultra Trail 3.0 — Rocky Hill Climbers'],
-            ];
-            foreach ($gallerySlides as [$file, $alt]):
-                $src = APP_URL . '/assets/images/' . $file;
-            ?>
-            <div class="carousel-item">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-auto text-center">
-                            <img src="<?= $src ?>"
-                                 alt="<?= htmlspecialchars($alt) ?>"
-                                 class="hero-strip-poster"
-                                 onclick="openLightbox('<?= $src ?>')"
-                                 title="Click to enlarge">
-                            <div class="nddk-logo-hint mt-3">
-                                <i class="fas fa-search-plus me-1"></i> Click to enlarge
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach; ?>
-
-        </div><!-- /.carousel-inner -->
-
-        <!-- Prev / Next controls -->
-        <button class="carousel-control-prev hero-strip-ctrl" type="button"
-                data-bs-target="#heroGraphicCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next hero-strip-ctrl" type="button"
-                data-bs-target="#heroGraphicCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-
-        <!-- Dot indicators (10 slides total) -->
-        <div class="carousel-indicators hero-strip-dots">
-            <?php for ($i = 0; $i < 10; $i++): ?>
-            <button type="button"
-                    data-bs-target="#heroGraphicCarousel"
-                    data-bs-slide-to="<?= $i ?>"
-                    <?= $i === 0 ? 'class="active" aria-current="true"' : '' ?>
-                    aria-label="Slide <?= $i + 1 ?>"></button>
-            <?php endfor; ?>
-        </div>
-    </div>
-</div>
-
 <!-- ============================================================ -->
-<!-- STATS SECTION -->
+<!-- STATS -->
 <!-- ============================================================ -->
-<section class="stats-section py-4">
+<section class="stats-band" aria-label="Event at a glance">
     <div class="container">
-        <div class="row g-3">
+        <div class="stats-grid">
             <?php
             $stats = [
                 ['icon' => 'fas fa-users',              'value' => '900+',   'label' => __('stats.participants')],
@@ -196,9 +127,9 @@ include PUBLIC_PATH . '/includes/header.php';
                 ['icon' => 'fas fa-hand-holding-heart', 'value' => '100%',   'label' => __('stats.charity')],
             ];
             foreach ($stats as $s): ?>
-                <div class="col-6 col-md-3">
-                    <div class="stat-card text-center">
-                        <div class="stat-icon"><i class="<?= $s['icon'] ?>"></i></div>
+                <div class="stat-tile reveal">
+                    <i class="<?= $s['icon'] ?>" aria-hidden="true"></i>
+                    <div>
                         <div class="stat-value"><?= $s['value'] ?></div>
                         <div class="stat-label"><?= $s['label'] ?></div>
                     </div>
@@ -211,76 +142,61 @@ include PUBLIC_PATH . '/includes/header.php';
 <!-- ============================================================ -->
 <!-- ABOUT SECTION -->
 <!-- ============================================================ -->
-<section class="about-section py-5" id="about">
+<section class="section about-section" id="about">
     <div class="container">
-        <div class="row align-items-center gy-5">
+        <div class="row gy-5 gx-lg-5">
             <div class="col-lg-5">
-                <div class="about-img-wrap">
-                    <div class="about-img-bg"></div>
-                    <div class="about-img-card">
-                        <div class="text-center p-4">
-                            <img src="<?= APP_URL ?>/assets/images/nddk-logo.png" alt="NDDK Logo" style="width:120px;height:120px;object-fit:contain;" class="mb-3">
-                            <h3 class="fw-800 text-dark">Run For Hope</h3>
-                            <p class="text-muted"><?= __('hero.event_date') ?> | Kimanis, Papar, Sabah</p>
-                            <div class="d-flex justify-content-center gap-3 mt-3">
-                                <div class="text-center">
-                                    <div class="fw-700 text-primary fs-4">7KM</div>
-                                    <div class="small text-muted"><?= __('about.fun_run') ?></div>
-                                </div>
-                                <div class="vr"></div>
-                                <div class="text-center">
-                                    <div class="fw-700 text-primary fs-4">15KM</div>
-                                    <div class="small text-muted"><?= __('about.trail') ?></div>
-                                </div>
-                                <div class="vr"></div>
-                                <div class="text-center">
-                                    <div class="fw-700 text-primary fs-4">43KM</div>
-                                    <div class="small text-muted"><?= __('about.ultra') ?></div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="about-card reveal">
+                    <img src="<?= $img ?>/web/nddk-logo-320.png" alt="NDDK Logo" width="132" height="132" class="about-logo">
+                    <h3 class="about-card-title">Run For Hope</h3>
+                    <p class="about-card-meta"><?= __('hero.event_date') ?> · Kimanis, Papar, Sabah</p>
+                    <div class="about-distances">
+                        <div><span>7KM</span><small><?= __('about.fun_run') ?></small></div>
+                        <div><span>15KM</span><small><?= __('about.trail') ?></small></div>
+                        <div><span>43KM</span><small><?= __('about.ultra') ?></small></div>
+                    </div>
+                </div>
+
+                <!-- VIP / Distinguished Guests -->
+                <div class="note-card note-violet reveal">
+                    <div class="note-icon"><i class="fas fa-star" aria-hidden="true"></i></div>
+                    <div>
+                        <h3 class="note-title"><?= __('about.vip.title') ?></h3>
+                        <p class="mb-0"><?= __('about.vip.p') ?></p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-7">
                 <div class="section-label"><?= __('about.label') ?></div>
                 <h2 class="section-title"><?= __('about.title') ?></h2>
-                <p class="text-muted fs-6 mb-4" style="line-height:1.85;">
-                    <?= __('about.p1') ?>
-                </p>
-                <p class="text-muted fs-6 mb-4" style="line-height:1.85;">
-                    <?= __('about.p2') ?>
-                </p>
-                <p class="text-muted fs-6 mb-4" style="line-height:1.85;">
-                    <?= __('about.p3') ?>
-                </p>
+                <div class="prose">
+                    <p class="lead-p"><?= __('about.p1') ?></p>
+                    <p><?= __('about.p2') ?></p>
+                    <p><?= __('about.p3') ?></p>
+                </div>
 
                 <!-- Donation bank account box -->
-                <div class="rounded-3 p-3 mb-4" style="background:linear-gradient(135deg,#fef9c3,#fef3c7);border-left:4px solid #d97706;">
-                    <h6 class="fw-700 mb-2 text-dark"><i class="fas fa-university me-2 text-warning"></i><?= __('about.bank.title') ?></h6>
-                    <div class="small text-dark">
-                        <div class="mb-1"><span class="opacity-75">Bank:</span> <strong><?= __('about.bank.name') ?></strong></div>
-                        <div class="mb-1"><span class="opacity-75">Account Name:</span> <strong><?= __('about.bank.acc_name') ?></strong></div>
-                        <div><span class="opacity-75">Account Number:</span> <strong class="fs-6 text-primary"><?= __('about.bank.acc_num') ?></strong></div>
+                <div class="note-card note-gold reveal">
+                    <div class="note-icon"><i class="fas fa-university" aria-hidden="true"></i></div>
+                    <div class="flex-grow-1">
+                        <h3 class="note-title"><?= __('about.bank.title') ?></h3>
+                        <dl class="bank-dl">
+                            <dt>Bank</dt><dd><?= __('about.bank.name') ?></dd>
+                            <dt>Account Name</dt><dd><?= __('about.bank.acc_name') ?></dd>
+                            <dt>Account Number</dt>
+                            <dd>
+                                <span class="acc-num"><?= __('about.bank.acc_num') ?></span>
+                                <button type="button" class="btn-copy" data-copy="<?= e(strip_tags(__('about.bank.acc_num'))) ?>">
+                                    <i class="far fa-copy me-1" aria-hidden="true"></i><?= __('ui.copy') ?>
+                                </button>
+                            </dd>
+                        </dl>
                     </div>
                 </div>
 
-                <p class="text-muted fs-6 mb-4" style="line-height:1.85;">
-                    <?= __('about.p4') ?>
-                </p>
+                <p class="prose"><?= __('about.p4') ?></p>
 
-                <!-- VIP / Distinguished Guests -->
-                <div class="rounded-3 p-3 mb-4 d-flex align-items-start gap-3" style="background:#f5f0ff;border-left:4px solid #7C3AED;">
-                    <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center" style="width:40px;height:40px;background:#ede9fe;">
-                        <i class="fas fa-star text-primary"></i>
-                    </div>
-                    <div>
-                        <h6 class="fw-700 mb-1 text-primary"><?= __('about.vip.title') ?></h6>
-                        <p class="text-muted small mb-0"><?= __('about.vip.p') ?></p>
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-4">
+                <ul class="feature-grid">
                     <?php
                     $features = [
                         'about.feat.medal', 'about.feat.shirt',
@@ -288,17 +204,12 @@ include PUBLIC_PATH . '/includes/header.php';
                         'about.feat.goody', 'about.feat.prizes',
                     ];
                     foreach ($features as $feat): ?>
-                        <div class="col-sm-6">
-                            <div class="feature-item">
-                                <i class="fas fa-check-circle text-primary me-2"></i>
-                                <span><?= __($feat) ?></span>
-                            </div>
-                        </div>
+                        <li class="feature-item"><i class="fas fa-check" aria-hidden="true"></i><span><?= __($feat) ?></span></li>
                     <?php endforeach; ?>
-                </div>
+                </ul>
                 <?php if ($registrationOpen): ?>
                     <a href="<?= APP_URL ?>/register.php" class="btn btn-primary-custom">
-                        <i class="fas fa-pencil-alt me-2"></i> <?= __('about.register') ?>
+                        <?= __('about.register') ?> <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
                     </a>
                 <?php endif; ?>
             </div>
@@ -309,14 +220,14 @@ include PUBLIC_PATH . '/includes/header.php';
 <!-- ============================================================ -->
 <!-- CATEGORIES SECTION -->
 <!-- ============================================================ -->
-<section class="categories-section py-5" id="categories">
+<section class="section categories-section" id="categories">
     <div class="container">
-        <div class="text-center mb-5">
-            <div class="section-label"><?= __('cat.label') ?></div>
-            <h2 class="section-title"><?= __('cat.title') ?></h2>
-            <p class="text-light opacity-75"><?= __('cat.subtitle') ?></p>
+        <div class="section-head text-center">
+            <div class="section-label section-label-dark"><?= __('cat.label') ?></div>
+            <h2 class="section-title text-white"><?= __('cat.title') ?></h2>
+            <p class="section-sub"><?= __('cat.subtitle') ?></p>
         </div>
-        <div class="row g-4 justify-content-center">
+        <div class="row g-4 justify-content-center align-items-stretch">
             <?php
             $icons    = ['fas fa-walking', 'fas fa-running', 'fas fa-bolt'];
             $featured = [false, true, false];
@@ -324,14 +235,14 @@ include PUBLIC_PATH . '/includes/header.php';
                 $isFeatured = $featured[$i] ?? false;
             ?>
                 <div class="col-lg-4 col-md-6">
-                    <div class="category-card <?= $isFeatured ? 'featured' : '' ?>">
+                    <article class="category-card reveal <?= $isFeatured ? 'featured' : '' ?>">
                         <?php if ($isFeatured): ?>
                             <div class="category-badge-top"><?= __('cat.popular') ?></div>
                         <?php endif; ?>
-                        <div class="category-icon">
-                            <i class="<?= $icons[$i] ?? 'fas fa-running' ?>"></i>
+                        <div class="category-head">
+                            <div class="category-km"><?= e($cat['distance']) ?></div>
+                            <div class="category-icon"><i class="<?= $icons[$i] ?? 'fas fa-running' ?>" aria-hidden="true"></i></div>
                         </div>
-                        <div class="category-km"><?= e($cat['distance']) ?></div>
                         <h3 class="category-name"><?= e($cat['name']) ?></h3>
                         <p class="category-desc"><?= e($cat['description']) ?></p>
                         <div class="category-price">
@@ -339,59 +250,59 @@ include PUBLIC_PATH . '/includes/header.php';
                             <span class="price-amount"><?= number_format((float)$cat['fee'], 0) ?></span>
                         </div>
                         <ul class="category-perks">
-                            <li><i class="fas fa-check"></i> <?= __('cat.perk.medal') ?></li>
-                            <li><i class="fas fa-check"></i> <?= __('cat.perk.pack') ?></li>
-                            <li><i class="fas fa-check"></i> <?= __('cat.perk.cert') ?></li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.medal') ?></li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.pack') ?></li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.cert') ?></li>
                             <?php if ($cat['distance'] !== '7KM'): ?>
-                                <li><i class="fas fa-check"></i> <?= __('cat.perk.trail') ?></li>
+                                <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.trail') ?></li>
                             <?php endif; ?>
                             <?php if ($cat['distance'] === '43KM'): ?>
-                                <li><i class="fas fa-check"></i> <?= __('cat.perk.ultra') ?></li>
+                                <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.ultra') ?></li>
                             <?php endif; ?>
-                            <li><i class="fas fa-check"></i> <?= __('cat.perk.shirt') ?></li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.shirt') ?></li>
                             <?php if ($cat['distance'] === '43KM'): ?>
-                                <li><i class="fas fa-check"></i> <?= __('cat.perk.finisher_shirt') ?></li>
-                                <li><i class="fas fa-check"></i> <?= __('cat.perk.prizes_20') ?></li>
+                                <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.finisher_shirt') ?></li>
+                                <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.prizes_20') ?></li>
                             <?php elseif ($cat['distance'] === '15KM'): ?>
-                                <li><i class="fas fa-check"></i> <?= __('cat.perk.prizes_10') ?></li>
+                                <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.prizes_10') ?></li>
                             <?php elseif ($cat['distance'] === '7KM'): ?>
-                                <li><i class="fas fa-check"></i> <?= __('cat.perk.prizes_5') ?></li>
+                                <li><i class="fas fa-check" aria-hidden="true"></i> <?= __('cat.perk.prizes_5') ?></li>
                             <?php endif; ?>
                         </ul>
-                        <?php if ($registrationOpen): ?>
-                            <a href="<?= APP_URL ?>/register.php?category=<?= $cat['id'] ?>" class="btn btn-category-register">
-                                <?= __('cat.register_btn', number_format((float)$cat['fee'], 0)) ?>
-                            </a>
-                        <?php else: ?>
-                            <button class="btn btn-category-register disabled" disabled><?= __('cat.closed') ?></button>
-                        <?php endif; ?>
-                        <?php if ($cat['max_participants'] > 0): ?>
-                            <?php
-                            $remaining = $cat['max_participants'] - $cat['current_participants'];
-                            $pct = round(($cat['current_participants'] / $cat['max_participants']) * 100);
-                            ?>
-                            <div class="slot-bar mt-3">
-                                <div class="d-flex justify-content-between mb-1">
-                                    <small class="text-muted"><?= __('cat.slots', $remaining) ?></small>
-                                    <small class="text-muted"><?= __('cat.filled', $pct) ?></small>
+                        <div class="category-foot">
+                            <?php if ($registrationOpen): ?>
+                                <a href="<?= APP_URL ?>/register.php?category=<?= $cat['id'] ?>" class="btn btn-category-register">
+                                    <?= __('cat.register_btn', number_format((float)$cat['fee'], 0)) ?>
+                                </a>
+                            <?php else: ?>
+                                <button class="btn btn-category-register disabled" disabled><?= __('cat.closed') ?></button>
+                            <?php endif; ?>
+                            <?php if ($cat['max_participants'] > 0): ?>
+                                <?php
+                                $remaining = $cat['max_participants'] - $cat['current_participants'];
+                                $pct = round(($cat['current_participants'] / $cat['max_participants']) * 100);
+                                ?>
+                                <div class="slot-bar">
+                                    <div class="d-flex justify-content-between">
+                                        <small><?= __('cat.slots', $remaining) ?></small>
+                                        <small><?= __('cat.filled', $pct) ?></small>
+                                    </div>
+                                    <div class="slot-track" role="progressbar" aria-valuenow="<?= $pct ?>" aria-valuemin="0" aria-valuemax="100" aria-label="<?= e($cat['distance']) ?>">
+                                        <div class="slot-fill" style="width:<?= $pct ?>%"></div>
+                                    </div>
                                 </div>
-                                <div class="progress" style="height:6px;">
-                                    <div class="progress-bar bg-warning" style="width:<?= $pct ?>%"></div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                            <?php endif; ?>
+                        </div>
+                    </article>
                 </div>
             <?php endforeach; ?>
         </div>
 
         <!-- Shirt add-on note -->
-        <div class="text-center mt-4">
-            <div class="shirt-note">
-                <i class="fas fa-tshirt me-2 text-warning"></i>
-                <?= __('cat.shirt_note', e(getSetting('shirt_price', '35'))) ?>
-            </div>
-        </div>
+        <p class="shirt-note">
+            <i class="fas fa-tshirt" aria-hidden="true"></i>
+            <span><?= __('cat.shirt_note', e(getSetting('shirt_price', '35'))) ?></span>
+        </p>
     </div>
 </section>
 
@@ -401,273 +312,232 @@ include PUBLIC_PATH . '/includes/header.php';
 <?php
 $shirt1 = PUBLIC_PATH . '/assets/images/shirt-sample-1.jpg';
 $shirt2 = PUBLIC_PATH . '/assets/images/shirt-sample-2.jpg';
-$shirt1Url = APP_URL . '/assets/images/shirt-sample-1.jpg';
-$shirt2Url = APP_URL . '/assets/images/shirt-sample-2.jpg';
+$shirt1Url = $img . '/shirt-sample-1.jpg';
+$shirt2Url = $img . '/shirt-sample-2.jpg';
 $imagesReady = file_exists($shirt1) && file_exists($shirt2);
+$shirtPrice  = number_format((float)getSetting('shirt_price', '40'), 0);
 ?>
-<section id="shirt" style="background:#f0f4ff;padding:60px 0;">
+<section class="section shirt-section" id="shirt">
     <div class="container">
-
-        <!-- Heading -->
-        <div class="text-center mb-5">
-            <span style="display:inline-block;background:#7C3AED;color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 16px;border-radius:20px;margin-bottom:12px;">
-                <?= __('shirt.label') ?>
-            </span>
-            <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:2rem;color:#1e1b4b;margin-bottom:8px;">
-                <?= __('shirt.title') ?>
-            </h2>
-            <p style="color:#6b7280;max-width:520px;margin:0 auto;">
-                <?= __('shirt.subtitle') ?>
-            </p>
+        <div class="section-head text-center">
+            <div class="section-label"><?= __('shirt.label') ?></div>
+            <h2 class="section-title"><?= __('shirt.title') ?></h2>
+            <p class="section-sub section-sub-muted"><?= __('shirt.subtitle') ?></p>
         </div>
 
-        <div class="row align-items-center g-4">
-
-            <!-- Carousel / Images -->
+        <div class="row g-4 align-items-stretch">
             <div class="col-lg-7">
                 <?php if ($imagesReady): ?>
-                <div id="shirtCarousel" class="carousel slide carousel-fade"
-                     data-bs-ride="carousel" data-bs-interval="4000"
-                     style="border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(124,58,237,.18);">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="<?= $shirt1Url ?>" class="d-block w-100"
-                                 alt="T-Shirt Sample 1"
-                                 style="max-height:500px;object-fit:contain;background:#e8eaf6;cursor:zoom-in;"
-                                 onclick="openLightbox('<?= $shirt1Url ?>')">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="<?= $shirt2Url ?>" class="d-block w-100"
-                                 alt="T-Shirt Sample 2"
-                                 style="max-height:500px;object-fit:contain;background:#e8eaf6;cursor:zoom-in;"
-                                 onclick="openLightbox('<?= $shirt2Url ?>')">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#shirtCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
+                <div class="shirt-photos" data-lightbox-group="shirts">
+                    <button type="button" class="shirt-photo shirt-photo-wide" data-full="<?= $shirt1Url ?>" aria-label="T-Shirt Sample 1">
+                        <img src="<?= $img ?>/web/shirt-sample-1-1000.jpg" alt="T-Shirt Sample 1" loading="lazy" decoding="async">
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#shirtCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
+                    <button type="button" class="shirt-photo" data-full="<?= $shirt2Url ?>" aria-label="T-Shirt Sample 2">
+                        <img src="<?= $img ?>/web/shirt-sample-2-800.jpg" alt="T-Shirt Sample 2" loading="lazy" decoding="async">
                     </button>
-                    <div class="carousel-indicators" style="bottom:-28px;">
-                        <button type="button" data-bs-target="#shirtCarousel" data-bs-slide-to="0" class="active" style="background:#7C3AED;"></button>
-                        <button type="button" data-bs-target="#shirtCarousel" data-bs-slide-to="1" style="background:#7C3AED;"></button>
-                    </div>
                 </div>
-                <p style="text-align:center;color:#9ca3af;font-size:12px;margin-top:36px;">
-                    <i class="fas fa-search-plus me-1"></i> <?= __('shirt.zoom') ?>
-                </p>
+                <p class="zoom-hint"><i class="fas fa-search-plus me-1" aria-hidden="true"></i> <?= __('shirt.zoom') ?></p>
                 <?php else: ?>
-                <div style="background:#e8eaf6;border-radius:16px;padding:60px;text-align:center;">
-                    <i class="fas fa-tshirt" style="font-size:4rem;color:#c4b5fd;"></i>
-                    <p style="color:#6b7280;margin-top:16px;"><?= __('shirt.coming_soon') ?></p>
+                <div class="shirt-placeholder">
+                    <i class="fas fa-tshirt" aria-hidden="true"></i>
+                    <p><?= __('shirt.coming_soon') ?></p>
                 </div>
                 <?php endif; ?>
             </div>
 
-            <!-- Info Panel -->
             <div class="col-lg-5">
-                <div style="background:#fff;border-radius:16px;padding:32px;box-shadow:0 4px 20px rgba(0,0,0,.06);">
+                <div class="panel shirt-panel reveal">
+                    <h3 class="panel-title">Nuhu Dolorosa Ultra Trail 3.0</h3>
+                    <p class="panel-kicker"><?= __('shirt.running_shirts') ?></p>
 
-                    <h3 style="font-family:'Montserrat',sans-serif;font-weight:800;color:#1e1b4b;margin-bottom:4px;font-size:1.4rem;">
-                        Nuhu Dolorosa Ultra Trail 3.0
-                    </h3>
-                    <p style="color:#7C3AED;font-weight:600;margin-bottom:16px;"><?= __('shirt.running_shirts') ?></p>
+                    <ul class="icon-list">
+                        <?php
+                        $feats = [
+                            ['fas fa-palette',  __('shirt.feat.design')],
+                            ['fas fa-tshirt',   __('shirt.feat.sizes')],
+                            ['fas fa-wind',     __('shirt.feat.fabric')],
+                            ['fas fa-star',     __('shirt.feat.print')],
+                            ['fas fa-box-open', __('shirt.feat.collect')],
+                        ];
+                        foreach ($feats as [$ic, $tx]): ?>
+                            <li><span class="icon-dot"><i class="<?= $ic ?>" aria-hidden="true"></i></span><span><?= $tx ?></span></li>
+                        <?php endforeach; ?>
+                    </ul>
 
-                    <?php
-                    $feats = [
-                        ['fas fa-palette',  __('shirt.feat.design')],
-                        ['fas fa-tshirt',   __('shirt.feat.sizes')],
-                        ['fas fa-wind',     __('shirt.feat.fabric')],
-                        ['fas fa-star',     __('shirt.feat.print')],
-                        ['fas fa-box-open', __('shirt.feat.collect')],
-                    ];
-                    foreach ($feats as [$ic, $tx]): ?>
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-                        <div style="width:32px;height:32px;background:#ede9fe;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i class="<?= $ic ?>" style="color:#7C3AED;font-size:13px;"></i>
+                    <div class="price-row price-row-green">
+                        <div>
+                            <div class="price-row-title"><i class="fas fa-gift me-1" aria-hidden="true"></i> <?= __('cat.perk.shirt') ?></div>
+                            <div class="price-row-note"><?= __('shirt.incl.note') ?></div>
                         </div>
-                        <span style="color:#374151;font-size:14px;"><?= $tx ?></span>
+                        <span class="pill pill-green"><?= __('shirt.incl.badge') ?></span>
                     </div>
-                    <?php endforeach; ?>
-
-                    <!-- Included shirt -->
-                    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:14px 16px;margin:16px 0;">
-                        <div style="display:flex;align-items:center;justify-content:space-between;">
-                            <div>
-                                <div style="font-weight:700;color:#15803d;font-size:14px;"><i class="fas fa-gift me-1"></i> <?= __('cat.perk.shirt') ?></div>
-                                <div style="color:#6b7280;font-size:12px;margin-top:2px;"><?= __('shirt.incl.note') ?></div>
-                            </div>
-                            <span style="background:#16a34a;color:#fff;font-weight:700;font-size:11px;padding:4px 12px;border-radius:20px;"><?= __('shirt.incl.badge') ?></span>
+                    <div class="price-row price-row-violet">
+                        <div>
+                            <div class="price-row-title"><i class="fas fa-tshirt me-1" aria-hidden="true"></i> <?= __('shirt.extra.label') ?></div>
+                            <div class="price-row-note"><?= __('shirt.extra.note') ?></div>
                         </div>
+                        <div class="price-row-amount">RM <?= $shirtPrice ?></div>
                     </div>
-
-                    <!-- Purchasable shirts -->
-                    <div style="background:#ede9fe;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
-                        <div style="display:flex;align-items:center;justify-content:space-between;">
-                            <div>
-                                <div style="font-weight:700;color:#7C3AED;font-size:14px;"><i class="fas fa-tshirt me-1"></i> <?= __('shirt.extra.label') ?></div>
-                                <div style="color:#6b7280;font-size:12px;margin-top:2px;"><?= __('shirt.extra.note') ?></div>
-                            </div>
-                            <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.4rem;color:#7C3AED;">
-                                RM <?= number_format((float)getSetting('shirt_price', '40'), 0) ?>
-                            </div>
+                    <div class="price-row price-row-gold">
+                        <div>
+                            <div class="price-row-title"><i class="fas fa-medal me-1" aria-hidden="true"></i> <?= __('cat.perk.finisher_shirt') ?></div>
+                            <div class="price-row-note"><?= __('shirt.finisher.note') ?></div>
                         </div>
-                    </div>
-                    <div style="background:#fef3c7;border:1px solid #fbbf24;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
-                        <div style="display:flex;align-items:center;justify-content:space-between;">
-                            <div>
-                                <div style="font-weight:700;color:#92400e;font-size:14px;"><i class="fas fa-medal me-1"></i> <?= __('cat.perk.finisher_shirt') ?></div>
-                                <div style="color:#6b7280;font-size:12px;margin-top:2px;"><?= __('shirt.finisher.note') ?></div>
-                            </div>
-                            <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.4rem;color:#b45309;">
-                                RM <?= number_format((float)getSetting('shirt_price', '40'), 0) ?>
-                            </div>
-                        </div>
+                        <div class="price-row-amount">RM <?= $shirtPrice ?></div>
                     </div>
 
-                    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;font-size:13px;color:#1d4ed8;margin-bottom:20px;">
-                        <i class="fas fa-info-circle me-2"></i><?= __('shirt.note') ?>
-                    </div>
+                    <p class="info-note"><i class="fas fa-info-circle me-2" aria-hidden="true"></i><?= __('shirt.note') ?></p>
 
                     <?php if ($registrationOpen): ?>
-                    <a href="<?= APP_URL ?>/register.php"
-                       style="display:block;text-align:center;background:linear-gradient(135deg,#6B21A8,#7C3AED);color:#fff;font-weight:700;padding:14px;border-radius:10px;text-decoration:none;font-size:15px;">
-                        <i class="fas fa-pencil-alt me-2"></i> <?= __('about.register') ?>
+                    <a href="<?= APP_URL ?>/register.php" class="btn btn-primary-custom w-100 justify-content-center">
+                        <?= __('about.register') ?> <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
                     </a>
                     <?php endif; ?>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 
-<!-- Lightbox -->
-<div id="lightbox" onclick="closeLightbox()"
-     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;cursor:zoom-out;align-items:center;justify-content:center;">
-    <img id="lightboxImg" src="" alt=""
-         style="max-width:92vw;max-height:90vh;object-fit:contain;border-radius:8px;">
-    <button onclick="closeLightbox()" title="Close"
-            style="position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:2rem;line-height:1;cursor:pointer;">&#x2715;</button>
-</div>
-<script>
-function openLightbox(src){
-    document.getElementById('lightboxImg').src = src;
-    var lb = document.getElementById('lightbox');
-    lb.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-function closeLightbox(){
-    document.getElementById('lightbox').style.display = 'none';
-    document.body.style.overflow = '';
-}
-document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLightbox(); });
-</script>
-
 <!-- ============================================================ -->
 <!-- SIZE CHART -->
 <!-- ============================================================ -->
-<section id="size-chart" style="background:#fff;padding:60px 0;">
+<section class="section size-section" id="size-chart">
     <div class="container">
-        <div class="text-center mb-4">
-            <div class="section-label">APPAREL</div>
-            <h2 class="section-title">T-Shirt Size Chart</h2>
-            <p class="text-muted">All measurements are in inches &bull; Tolerance &plusmn;&thinsp;0.5 inch</p>
+        <div class="section-head text-center">
+            <div class="section-label"><?= __('ui.size_label') ?></div>
+            <h2 class="section-title"><?= __('ui.size_title') ?></h2>
+            <p class="section-sub section-sub-muted"><?= __('ui.size_sub') ?></p>
         </div>
         <div class="text-center">
-            <img src="<?= APP_URL ?>/assets/images/size-chart.jpg"
-                 alt="T-Shirt Size Chart — Adult and Kids Short/Long Sleeve"
-                 onclick="openLightbox(this.src)"
-                 style="max-width:100%;width:720px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.12);cursor:zoom-in;">
-            <p class="text-muted mt-2" style="font-size:.82rem;">
-                <i class="fas fa-search-plus me-1"></i>Tap / click image to enlarge
-            </p>
+            <button type="button" class="size-chart-btn" onclick="openLightbox('<?= $img ?>/size-chart.jpg', this.querySelector('img').alt)">
+                <img src="<?= $img ?>/web/size-chart-1400.jpg"
+                     alt="T-Shirt Size Chart — Adult and Kids Short/Long Sleeve"
+                     width="1400" height="1423" loading="lazy" decoding="async">
+            </button>
+            <p class="zoom-hint"><i class="fas fa-search-plus me-1" aria-hidden="true"></i><?= __('ui.enlarge') ?></p>
         </div>
     </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- GALLERY -->
+<!-- ============================================================ -->
+<?php
+$gallerySlides = [
+    ['event-poster.jpeg', 'event-poster-900.jpg', 'Nuhu Dolorosa Ultra Trail 3.0 — Official Event Poster'],
+    ['gallery-1.jpeg',    'gallery-1-900.jpg',    'Nuhu Dolorosa Ultra Trail 3.0 — Runners in Action'],
+    ['gallery-2.jpeg',    'gallery-2-900.jpg',    'Shalom Kopivosian — Trail Recce Team'],
+    ['gallery-3.jpeg',    'gallery-3-900.jpg',    'Shalom Kopivosian — Forest Trail Recce'],
+    ['gallery-4.jpeg',    'gallery-4-900.jpg',    'Larian Pengharapan — Poster Rasmi (BM)'],
+    ['gallery-5.jpeg',    'gallery-5-900.jpg',    'Nuhu Dolorosa Ultra Trail 3.0 — Sunset Runners'],
+    ['gallery-6.jpeg',    'gallery-6-900.jpg',    'Larian Amal Pengharapan — Poster Air Terjun'],
+    ['gallery-7.jpeg',    'gallery-7-900.jpg',    'Nuhu Dolorosa Ultra Trail 3.0 — Trail Runners'],
+    ['gallery-8.jpeg',    'gallery-8-900.jpg',    'Nuhu Dolorosa Ultra Trail 3.0 — Rocky Hill Climbers'],
+];
+?>
+<section class="section gallery-section" id="gallery" aria-labelledby="gallery-title">
+    <div class="container">
+        <div class="section-head section-head-split">
+            <div>
+                <div class="section-label section-label-dark"><?= __('ui.gallery_label') ?></div>
+                <h2 class="section-title text-white" id="gallery-title"><?= __('ui.gallery_title') ?></h2>
+                <p class="section-sub"><?= __('ui.gallery_sub') ?></p>
+            </div>
+            <div class="gallery-controls">
+                <button type="button" class="round-btn" data-gallery-step="-1" aria-label="<?= __('ui.prev') ?>"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+                <button type="button" class="round-btn" data-gallery-step="1" aria-label="<?= __('ui.next') ?>"><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+    <ul class="gallery-track" id="galleryTrack" data-lightbox-group="gallery">
+        <?php foreach ($gallerySlides as $i => [$full, $web, $alt]): ?>
+            <li class="gallery-item">
+                <button type="button" class="gallery-btn" data-full="<?= $img . '/' . $full ?>" aria-label="<?= e($alt) ?>">
+                    <img src="<?= $img ?>/web/<?= $web ?>" alt="<?= e($alt) ?>" loading="<?= $i < 2 ? 'eager' : 'lazy' ?>" decoding="async">
+                    <span class="gallery-cap"><?= e($alt) ?></span>
+                </button>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    <p class="container gallery-hint"><i class="fas fa-search-plus me-1" aria-hidden="true"></i><?= __('ui.enlarge') ?></p>
 </section>
 
 <!-- ============================================================ -->
 <!-- HOW IT WORKS -->
 <!-- ============================================================ -->
-<section class="how-section py-5">
+<section class="section how-section" id="how">
     <div class="container">
-        <div class="text-center mb-5">
+        <div class="section-head text-center">
             <div class="section-label"><?= __('how.label') ?></div>
             <h2 class="section-title"><?= __('how.title') ?></h2>
         </div>
-        <div class="row g-4">
+        <ol class="steps">
             <?php
             $steps = [
-                ['num' => '1', 'icon' => 'fas fa-user-plus',   'title' => __('how.s1.title'), 'desc' => __('how.s1.desc')],
-                ['num' => '2', 'icon' => 'fas fa-tshirt',      'title' => __('how.s2.title'), 'desc' => __('how.s2.desc')],
-                ['num' => '3', 'icon' => 'fas fa-credit-card', 'title' => __('how.s3.title'), 'desc' => __('how.s3.desc')],
-                ['num' => '4', 'icon' => 'fas fa-envelope',    'title' => __('how.s4.title'), 'desc' => __('how.s4.desc')],
+                ['icon' => 'fas fa-user-plus',   'title' => __('how.s1.title'), 'desc' => __('how.s1.desc')],
+                ['icon' => 'fas fa-route',       'title' => __('how.s2.title'), 'desc' => __('how.s2.desc')],
+                ['icon' => 'fas fa-tshirt',      'title' => __('how.s3.title'), 'desc' => __('how.s3.desc')],
+                ['icon' => 'fas fa-envelope',    'title' => __('how.s4.title'), 'desc' => __('how.s4.desc')],
             ];
-            foreach ($steps as $step):
+            foreach ($steps as $n => $step):
             ?>
-                <div class="col-md-3 col-sm-6">
-                    <div class="step-card text-center">
-                        <div class="step-num"><?= $step['num'] ?></div>
-                        <div class="step-icon"><i class="<?= $step['icon'] ?>"></i></div>
-                        <h5 class="step-title"><?= $step['title'] ?></h5>
-                        <p class="step-desc text-muted small"><?= $step['desc'] ?></p>
-                    </div>
-                </div>
+                <li class="step reveal">
+                    <div class="step-marker"><span><?= $n + 1 ?></span></div>
+                    <div class="step-icon"><i class="<?= $step['icon'] ?>" aria-hidden="true"></i></div>
+                    <h3 class="step-title"><?= $step['title'] ?></h3>
+                    <p class="step-desc"><?= $step['desc'] ?></p>
+                </li>
             <?php endforeach; ?>
-        </div>
+        </ol>
     </div>
 </section>
 
 <!-- ============================================================ -->
 <!-- PAYMENT / BANK TRANSFER SECTION -->
 <!-- ============================================================ -->
-<section class="payment-section py-5">
+<section class="section payment-section" id="payment">
     <div class="container">
-        <div class="text-center mb-4">
+        <div class="section-head text-center">
             <div class="section-label"><?= __('pay.label') ?></div>
             <h2 class="section-title"><?= __('pay.title') ?></h2>
-            <p class="text-muted"><?= __('pay.desc') ?></p>
+            <p class="section-sub section-sub-muted"><?= __('pay.desc') ?></p>
         </div>
-        <div class="row align-items-center justify-content-center g-4">
+        <div class="row align-items-stretch justify-content-center g-4">
 
             <!-- Bank Transfer Card -->
-            <div class="col-lg-5 col-md-7 text-center">
-                <div class="rounded-4 p-4 mx-auto" style="max-width:420px;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;">
-                    <div class="mb-3">
-                        <i class="fas fa-university fs-2 mb-2" style="opacity:0.8;"></i>
-                        <div class="fw-700 fs-5"><?= __('about.bank.name') ?></div>
+            <div class="col-lg-5 col-md-7">
+                <div class="bank-card reveal">
+                    <div class="bank-card-head">
+                        <i class="fas fa-university" aria-hidden="true"></i>
+                        <span><?= __('about.bank.name') ?></span>
                     </div>
-                    <div class="d-flex justify-content-between border-bottom border-white border-opacity-25 py-2">
-                        <span style="opacity:0.75;"><?= __('pay.acc_name') ?></span>
+                    <div class="bank-card-row">
+                        <span><?= __('pay.acc_name') ?></span>
                         <strong><?= __('about.bank.acc_name') ?></strong>
                     </div>
-                    <div class="d-flex justify-content-between py-2 mt-1">
-                        <span style="opacity:0.75;"><?= __('pay.acc_num') ?></span>
-                        <strong class="fs-5 text-warning"><?= __('about.bank.acc_num') ?></strong>
+                    <div class="bank-card-row">
+                        <span><?= __('pay.acc_num') ?></span>
+                        <strong class="bank-card-num"><?= __('about.bank.acc_num') ?></strong>
                     </div>
+                    <button type="button" class="btn-copy btn-copy-light" data-copy="<?= e(strip_tags(__('about.bank.acc_num'))) ?>">
+                        <i class="far fa-copy me-1" aria-hidden="true"></i><?= __('ui.copy') ?> <?= __('pay.acc_num') ?>
+                    </button>
                 </div>
-                <p class="text-muted small mt-3"><i class="fas fa-info-circle me-1 text-primary"></i> <?= __('pay.note') ?></p>
+                <p class="info-note mt-3"><i class="fas fa-info-circle me-2" aria-hidden="true"></i><?= __('pay.note') ?></p>
             </div>
 
             <!-- DuitNow QR -->
-            <div class="col-lg-3 col-md-5 text-center">
-                <div class="d-inline-block position-relative">
-                    <div class="fw-700 mb-3" style="color:#e11d6a;font-size:0.85rem;letter-spacing:.05em;text-transform:uppercase;">
-                        <i class="fas fa-qrcode me-1"></i> Scan to Pay — DuitNow QR
-                    </div>
-                    <div class="rounded-4 p-3 bg-white shadow" style="display:inline-block;border:2px solid #fce7f3;">
-                        <img src="<?= APP_URL ?>/assets/images/duitnow-qr.png"
+            <div class="col-lg-3 col-md-5">
+                <div class="qr-card reveal">
+                    <div class="qr-title"><i class="fas fa-qrcode me-1" aria-hidden="true"></i> <?= __('ui.qr_title') ?></div>
+                    <button type="button" class="qr-btn" onclick="openLightbox('<?= $img ?>/duitnow-qr.png', this.querySelector('img').alt)">
+                        <img src="<?= $img ?>/web/duitnow-qr-480.png"
                              alt="DuitNow QR — RTDKK ST. ANNE PENAMPANG BARU"
-                             onclick="openLightbox('<?= APP_URL ?>/assets/images/duitnow-qr.png')"
-                             title="Click to enlarge"
-                             style="width:200px;height:200px;object-fit:contain;display:block;cursor:zoom-in;">
-                        <div class="mt-2" style="font-size:10px;font-weight:700;color:#374151;letter-spacing:.04em;text-align:center;">
-                            RTDKK ST. ANNE PENAMPANG BARU
-                        </div>
-                        <div style="font-size:9px;color:#9ca3af;text-align:center;">Malaysia National QR · All Banks &amp; e-Wallets</div>
-                        <div style="font-size:9px;color:#e11d6a;text-align:center;margin-top:4px;">&#128269; Tap to enlarge</div>
-                    </div>
+                             width="200" height="200" loading="lazy">
+                    </button>
+                    <div class="qr-name">RTDKK ST. ANNE PENAMPANG BARU</div>
+                    <div class="qr-sub"><?= __('ui.qr_sub') ?></div>
                 </div>
             </div>
 
@@ -678,142 +548,129 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLigh
 <!-- ============================================================ -->
 <!-- CONTACT SECTION -->
 <!-- ============================================================ -->
-<section class="contact-section py-5" id="contact">
+<section class="section contact-section" id="contact">
     <div class="container">
-        <div class="text-center mb-5">
+        <div class="section-head text-center">
             <div class="section-label"><?= __('contact.label') ?></div>
             <h2 class="section-title"><?= __('contact.title') ?></h2>
         </div>
         <div class="row g-4 justify-content-center">
-            <div class="col-md-3 col-sm-6">
-                <div class="contact-card text-center">
-                    <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                    <h5 class="fw-700"><?= __('contact.call') ?></h5>
-                    <p class="text-muted small mb-1"><?= e(getSetting('contact_name', 'Jessel Kamijan')) ?></p>
-                    <a href="tel:<?= preg_replace('/[^+0-9]/', '', getSetting('contact_phone')) ?>" class="contact-link">
-                        <?= e(getSetting('contact_phone')) ?>
+            <?php
+            $contacts = [
+                ['fas fa-phone-alt',      __('contact.call'),    e(getSetting('contact_name', 'Jessel Kamijan')),
+                 'tel:' . preg_replace('/[^+0-9]/', '', getSetting('contact_phone')), e(getSetting('contact_phone')), false],
+                ['fas fa-phone-alt',      __('contact.call2'),   e(getSetting('contact_name2', 'Prisca Kinsik')),
+                 'tel:' . preg_replace('/[^+0-9]/', '', getSetting('contact_phone2', '0172574954')), e(getSetting('contact_phone2', '017-2574954')), false],
+                ['fas fa-envelope',       __('contact.email_h'), __('contact.email_sub'),
+                 'mailto:' . e(getSetting('contact_email')), e(getSetting('contact_email')), false],
+                ['fas fa-map-marker-alt', __('contact.venue_h'), e(getSetting('event_venue')),
+                 $mapUrl, __('contact.map'), true],
+            ];
+            foreach ($contacts as [$icon, $title, $sub, $href, $linkText, $external]): ?>
+                <div class="col-lg-3 col-sm-6">
+                    <a class="contact-card reveal" href="<?= $href ?>" <?= $external ? 'target="_blank" rel="noopener"' : '' ?>>
+                        <span class="contact-icon"><i class="<?= $icon ?>" aria-hidden="true"></i></span>
+                        <span class="contact-title"><?= $title ?></span>
+                        <span class="contact-sub"><?= $sub ?></span>
+                        <span class="contact-link"><?= $linkText ?> <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </a>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="contact-card text-center">
-                    <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                    <h5 class="fw-700"><?= __('contact.call2') ?></h5>
-                    <p class="text-muted small mb-1"><?= e(getSetting('contact_name2', 'Prisca Kinsik')) ?></p>
-                    <a href="tel:<?= preg_replace('/[^+0-9]/', '', getSetting('contact_phone2', '0172574954')) ?>" class="contact-link">
-                        <?= e(getSetting('contact_phone2', '017-2574954')) ?>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="contact-card text-center">
-                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                    <h5 class="fw-700"><?= __('contact.email_h') ?></h5>
-                    <p class="text-muted small mb-1"><?= __('contact.email_sub') ?></p>
-                    <a href="mailto:<?= e(getSetting('contact_email')) ?>" class="contact-link">
-                        <?= e(getSetting('contact_email')) ?>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="contact-card text-center">
-                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h5 class="fw-700"><?= __('contact.venue_h') ?></h5>
-                    <p class="text-muted small mb-1"><?= e(getSetting('event_venue')) ?></p>
-                    <a href="https://www.google.com/maps/search/St+Anne+Church+Penampang+Baru+Kimanis+Papar+Sabah" target="_blank" rel="noopener" class="contact-link">
-                        <?= __('contact.map') ?>
-                    </a>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
 
 <!-- CTA Banner -->
 <?php if ($registrationOpen): ?>
-<section class="cta-section py-5">
-    <div class="container text-center">
-        <h2 class="cta-title mb-3"><?= __('cta.title') ?></h2>
-        <p class="cta-sub mb-4"><?= __('cta.sub') ?></p>
-        <a href="<?= APP_URL ?>/register.php" class="btn btn-cta">
-            <i class="fas fa-running me-2"></i> <?= __('cta.btn') ?>
-        </a>
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-panel">
+            <div>
+                <h2 class="cta-title"><?= __('cta.title') ?></h2>
+                <p class="cta-sub"><?= __('cta.sub') ?></p>
+            </div>
+            <a href="<?= APP_URL ?>/register.php" class="btn btn-cta">
+                <i class="fas fa-running me-2" aria-hidden="true"></i> <?= __('cta.btn') ?>
+            </a>
+        </div>
     </div>
 </section>
 <?php endif; ?>
 
 <script>
-/* ── Bokeh particle system for hero background ── */
+/* ── Drifting light particles over the hero photo (skipped for reduced motion) ── */
 (function () {
-    var canvas = document.getElementById('hero-canvas');
+    var canvas  = document.getElementById('hero-canvas');
     var section = document.getElementById('hero');
-    if (!canvas || !section) return;
+    if (!canvas || !section || !canvas.getContext) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var ctx = canvas.getContext('2d');
     var particles = [];
-    var RAF;
+    var RAF = null;
+    var visible = true;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     function resize() {
-        canvas.width  = section.offsetWidth;
-        canvas.height = section.offsetHeight;
+        canvas.width  = section.offsetWidth * dpr;
+        canvas.height = section.offsetHeight * dpr;
+        canvas.style.width  = section.offsetWidth + 'px';
+        canvas.style.height = section.offsetHeight + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     window.addEventListener('resize', resize);
     resize();
 
-    /* Particle colours: gold, white, soft-purple */
-    var colours = [
-        'rgba(245,158,11,',   /* gold   */
-        'rgba(255,255,255,',  /* white  */
-        'rgba(168,85,247,',   /* purple */
-        'rgba(99,172,255,',   /* blue   */
-    ];
+    /* Gold, white and soft violet — the colours of a dawn start */
+    var colours = ['rgba(245,176,20,', 'rgba(255,255,255,', 'rgba(196,148,255,'];
+    var W = function () { return section.offsetWidth; };
+    var H = function () { return section.offsetHeight; };
 
-    function Particle() {
-        this.reset(true);
-    }
+    function Particle() { this.reset(true); }
     Particle.prototype.reset = function (init) {
-        this.x     = Math.random() * canvas.width;
-        this.y     = init ? Math.random() * canvas.height : canvas.height + 10;
-        this.r     = Math.random() * 3 + 1;          /* radius 1–4 px   */
-        this.speed = Math.random() * 0.4 + 0.15;     /* px per frame    */
-        this.drift = (Math.random() - 0.5) * 0.3;    /* gentle sideways */
+        this.x     = Math.random() * W();
+        this.y     = init ? Math.random() * H() : H() + 10;
+        this.r     = Math.random() * 2.4 + 0.8;
+        this.speed = Math.random() * 0.35 + 0.12;
+        this.drift = (Math.random() - 0.5) * 0.25;
         this.col   = colours[Math.floor(Math.random() * colours.length)];
-        this.alpha = Math.random() * 0.45 + 0.1;
-        this.pulse = Math.random() * Math.PI * 2;     /* phase offset    */
+        this.alpha = Math.random() * 0.4 + 0.1;
+        this.pulse = Math.random() * Math.PI * 2;
     };
     Particle.prototype.update = function () {
         this.y     -= this.speed;
         this.x     += this.drift;
-        this.pulse += 0.025;
-        /* gently pulsing opacity */
-        var a = this.alpha + Math.sin(this.pulse) * 0.12;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        /* soft glow */
+        this.pulse += 0.02;
+        var a = Math.max(0, this.alpha + Math.sin(this.pulse) * 0.1);
         var grd = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r * 3);
         grd.addColorStop(0,   this.col + Math.min(a, 0.7) + ')');
-        grd.addColorStop(0.4, this.col + Math.min(a * 0.5, 0.35) + ')');
         grd.addColorStop(1,   this.col + '0)');
         ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r * 3, 0, Math.PI * 2);
         ctx.fill();
         if (this.y < -10) this.reset(false);
     };
 
-    /* Spawn 80 particles */
-    for (var i = 0; i < 80; i++) { particles.push(new Particle()); }
+    var count = window.innerWidth < 768 ? 35 : 60;
+    for (var i = 0; i < count; i++) { particles.push(new Particle()); }
 
     function loop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, W(), H());
         for (var i = 0; i < particles.length; i++) { particles[i].update(); }
         RAF = requestAnimationFrame(loop);
     }
+    function start() { if (!RAF && visible && !document.hidden) loop(); }
+    function stop()  { if (RAF) { cancelAnimationFrame(RAF); RAF = null; } }
 
-    /* Pause animation when tab hidden to save CPU */
-    document.addEventListener('visibilitychange', function () {
-        if (document.hidden) { cancelAnimationFrame(RAF); }
-        else { loop(); }
-    });
-
-    loop();
+    /* Pause when the tab is hidden or the hero is scrolled away, to save battery */
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+            visible = entries[0].isIntersecting;
+            visible ? start() : stop();
+        }).observe(section);
+    }
+    start();
 })();
 </script>
 
@@ -825,7 +682,7 @@ function updateCountdown() {
     const now  = new Date().getTime();
     const diff = eventTimestamp - now;
     if (diff <= 0) {
-        document.getElementById('countdown').innerHTML = '<p class="text-warning fs-4 fw-700">' + raceDayMsg + '</p>';
+        document.getElementById('countdown').innerHTML = '<p class="raceday-msg">' + raceDayMsg + '</p>';
         return;
     }
     const d = Math.floor(diff / (1000 * 60 * 60 * 24));

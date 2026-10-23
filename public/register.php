@@ -422,7 +422,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                     <div class="col-md-4">
                                         <label class="category-radio-label <?= $isFull ? 'disabled' : '' ?>">
                                             <input type="radio" name="category_id" value="<?= $cat['id'] ?>"
-                                                   class="category-radio d-none"
+                                                   class="category-radio visually-hidden"
                                                    data-fee="<?= $cat['fee'] ?>"
                                                    data-distance="<?= e($cat['distance']) ?>"
                                                    <?= $isSelected ? 'checked' : '' ?>
@@ -450,7 +450,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                     $isSelected = ($formData['race_category'] ?? '') === $value;
                                 ?>
                                     <div class="col-sm-6">
-                                        <label class="d-flex align-items-center gap-2 p-3 rounded-3 border cursor-pointer <?= $isSelected ? 'border-primary bg-primary bg-opacity-10' : '' ?>"
+                                        <label class="runner-cat-option d-flex align-items-center gap-2 p-3 rounded-3 border cursor-pointer <?= $isSelected ? 'border-primary bg-primary bg-opacity-10' : '' ?>"
                                                style="cursor:pointer;">
                                             <input type="radio" name="race_category" value="<?= e($value) ?>"
                                                    class="form-check-input mt-0 runner-cat-radio"
@@ -851,6 +851,150 @@ function updateFee() {
 }
 
 updateFee();
+</script>
+
+<!-- Mobile: keep the running total in view while filling the form -->
+<div class="reg-total-bar" id="regTotalBar" aria-hidden="true">
+    <div>
+        <small><?= __('reg.total') ?></small>
+        <strong id="regTotalBarAmount">RM 0.00</strong>
+    </div>
+    <a href="#feeFinalBox" class="btn" tabindex="-1"><?= __('reg.submit') ?></a>
+</div>
+
+<script>
+(function () {
+    const form       = document.getElementById('registrationForm');
+    const MSG_REQ    = <?= json_encode(__('ui.field_required')) ?>;
+    const MSG_FIX    = <?= json_encode(__('ui.fix_fields')) ?>;
+
+    // Tie each visible label to its field so screen readers announce it (adds ids where missing)
+    let autoId = 0;
+    form.querySelectorAll('label.form-label').forEach(label => {
+        if (label.htmlFor) return;
+        const field = label.parentElement.querySelector('input:not([type=hidden]):not([type=radio]), select, textarea');
+        if (!field) return;
+        if (!field.id) field.id = 'fld-' + (++autoId);
+        label.htmlFor = field.id;
+    });
+
+    // --- Client-side check before submitting (the server still validates everything) ---
+    const isShown = el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    const groupOf = el => el.closest('.col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-12, .declaration-box') || el.parentElement;
+
+    function clearError(holder) {
+        holder.querySelectorAll('.field-error[data-live]').forEach(n => n.remove());
+        holder.querySelectorAll('.is-invalid[data-live]').forEach(n => { n.classList.remove('is-invalid'); n.removeAttribute('data-live'); n.removeAttribute('aria-invalid'); });
+        holder.classList.remove('group-invalid');
+    }
+    function flag(field, holder, msg) {
+        holder = holder || groupOf(field);
+        if (holder.querySelector('.field-error[data-live]')) return;
+        if (field && field.classList) {
+            field.classList.add('is-invalid');
+            field.setAttribute('data-live', '');
+            field.setAttribute('aria-invalid', 'true');
+        }
+        const note = document.createElement('div');
+        note.className = 'field-error';
+        note.setAttribute('data-live', '');
+        note.textContent = msg || MSG_REQ;
+        if (field && field.id) {
+            note.id = field.id + '-err';
+            field.setAttribute('aria-describedby', note.id);
+        }
+        holder.appendChild(note);
+        return holder;
+    }
+
+    function validate() {
+        form.querySelectorAll('.field-error[data-live]').forEach(n => n.remove());
+        form.querySelectorAll('[data-live]').forEach(n => { n.classList.remove('is-invalid'); n.removeAttribute('data-live'); n.removeAttribute('aria-invalid'); });
+        form.querySelectorAll('.group-invalid').forEach(n => n.classList.remove('group-invalid'));
+        const bad = [];
+
+        // Plain required fields that are currently visible
+        form.querySelectorAll('input[required]:not([type=checkbox]):not([type=radio]), select[required], textarea[required]').forEach(f => {
+            if (!isShown(f)) return;
+            if (!f.value.trim()) bad.push(flag(f));
+            else if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value.trim())) bad.push(flag(f, null, f.validationMessage || MSG_REQ));
+        });
+
+        // Date of birth (three dropdowns)
+        const dobDay = document.getElementById('dob_day');
+        if (!document.getElementById('dob_hidden').value) {
+            ['dob_day', 'dob_month', 'dob_year'].forEach(id => {
+                const s = document.getElementById(id);
+                if (!s.value) { s.classList.add('is-invalid'); s.setAttribute('data-live', ''); }
+            });
+            bad.push(flag(dobDay, dobDay.closest('.col-md-4')));
+        }
+
+        // Distance and runner category (radio groups)
+        if (!form.querySelector('[name="category_id"]:checked')) {
+            const row = form.querySelector('.category-radio').closest('.row');
+            row.classList.add('group-invalid');
+            bad.push(flag(null, row));
+        }
+        if (!form.querySelector('[name="race_category"]:checked')) {
+            const row = form.querySelector('.runner-cat-radio').closest('.row');
+            row.classList.add('group-invalid');
+            bad.push(flag(null, row));
+        }
+
+        // Size fields that only matter when their section is shown
+        const finisher = document.getElementById('finisherShirtSize');
+        if (isShown(finisher) && !finisher.value) bad.push(flag(finisher));
+        [['buy_extra_event', 'extra_event_size'], ['buy_finisher', 'extra_finisher_size']].forEach(([toggle, sizeName]) => {
+            const yes = form.querySelector(`[name="${toggle}"]:checked`);
+            const size = form.querySelector(`[name="${sizeName}"]`);
+            if (yes && yes.value === 'yes' && !size.value) bad.push(flag(size));
+        });
+
+        // Declarations
+        ['healthDecl', 'termsAccept'].forEach(id => {
+            const c = document.getElementById(id);
+            if (!c.checked) bad.push(flag(c, c.closest('.declaration-box')));
+        });
+
+        return bad.filter(Boolean);
+    }
+
+    form.addEventListener('submit', e => {
+        const bad = validate();
+        if (!bad.length) return;
+        e.preventDefault();
+        if (window.showToast) window.showToast(MSG_FIX);
+        const first = bad[0];
+        const nav = document.getElementById('mainNav');
+        window.scrollTo({ top: first.getBoundingClientRect().top + window.scrollY - (nav ? nav.offsetHeight : 0) - 24 });
+        const focusable = first.querySelector('input:not([type=hidden]), select, textarea');
+        if (focusable) focusable.focus({ preventScroll: true });
+    });
+
+    // Clear a field's message as soon as it is fixed
+    form.addEventListener('input',  e => { const h = e.target.closest('.row, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-12, .declaration-box'); if (h && h.querySelector('[data-live]')) clearError(groupOf(e.target)); });
+    form.addEventListener('change', e => {
+        if (e.target.matches('.category-radio, .runner-cat-radio')) { const r = e.target.closest('.row'); clearError(r); }
+        else if (e.target.closest('#dob_day, #dob_month, #dob_year')) clearError(e.target.closest('.col-md-4'));
+        else clearError(groupOf(e.target));
+    });
+
+    // --- Mobile running total ---
+    const bar     = document.getElementById('regTotalBar');
+    const barAmt  = document.getElementById('regTotalBarAmount');
+    const finalEl = document.getElementById('feeFinalAmount');
+    const sync = () => { barAmt.textContent = finalEl.textContent; };
+    sync();
+    new MutationObserver(sync).observe(finalEl, { childList: true, characterData: true, subtree: true });
+    document.body.classList.add('has-total-bar');
+    if ('IntersectionObserver' in window) {
+        let formVisible = false, finalVisible = false;
+        const update = () => bar.classList.toggle('show', formVisible && !finalVisible);
+        new IntersectionObserver(es => { formVisible = es[0].isIntersecting; update(); }).observe(form);
+        new IntersectionObserver(es => { finalVisible = es[0].isIntersecting; update(); }).observe(document.getElementById('feeFinalBox'));
+    }
+})();
 </script>
 
 <?php include PUBLIC_PATH . '/includes/footer.php'; ?>
