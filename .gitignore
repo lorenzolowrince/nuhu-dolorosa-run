@@ -22,3 +22,6 @@ public/structuredebug.php
 public/stripe-keycheck.php
 public/stripe-webhook-test.php
 public/test-mail.php
+
+# Local work log — never commit or upload
+/work-log/
