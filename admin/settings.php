@@ -23,8 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             'shirt_price', 'shirt_extra_size_fee_1', 'shirt_extra_size_fee_2', 'registration_open',
         ];
 
+        $oldSettings = [];
+        foreach ($allowedKeys as $key) {
+            $oldSettings[$key] = getSetting($key);
+        }
+        $newSettings = [];
+
         foreach ($allowedKeys as $key) {
             if (isset($_POST[$key])) {
+                $newSettings[$key] = sanitize($_POST[$key]);
                 $value = sanitize($_POST[$key]);
                 Database::execute(
                     'INSERT INTO system_settings (setting_key, setting_value)
@@ -35,7 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             }
         }
 
-        auditLog('update_settings', 'system_settings', null, null, $_POST, (int)$admin['id']);
+        [$logOld, $logNew] = auditDiff(array_intersect_key($oldSettings, $newSettings), $newSettings);
+        if ($logNew) {
+            auditLog('update_settings', 'system_settings', null, $logOld, $logNew, (int)$admin['id']);
+        }
         CSRF::rotate();
         setFlash('success', 'Settings updated successfully.');
         redirect(APP_URL . '/admin/settings.php');
@@ -50,11 +60,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $maxPax = max(0, (int)($_POST['max_participants'] ?? 0));
 
         if ($catId > 0 && $fee >= 0 && $name !== '') {
+            $oldCat = Database::fetchOne(
+                'SELECT name, description, fee, is_active, max_participants FROM event_categories WHERE id = ?',
+                [$catId]
+            ) ?? [];
             Database::execute(
                 'UPDATE event_categories SET name = ?, description = ?, fee = ?, is_active = ?, max_participants = ? WHERE id = ?',
                 [$name, $desc, $fee, $active, $maxPax, $catId]
             );
-            auditLog('update_category', 'event_categories', $catId, null, $_POST, (int)$admin['id']);
+            if (isset($oldCat['fee'])) $oldCat['fee'] = number_format((float) $oldCat['fee'], 2, '.', '');
+            [$logOld, $logNew] = auditDiff($oldCat, [
+                'name' => $name, 'description' => $desc, 'fee' => number_format($fee, 2, '.', ''),
+                'is_active' => $active, 'max_participants' => $maxPax,
+            ]);
+            if ($logNew) {
+                auditLog('update_category', 'event_categories', $catId, $logOld, $logNew, (int)$admin['id']);
+            }
             setFlash('success', 'Category updated successfully.');
         } else {
             setFlash('error', 'Invalid category data.');

@@ -39,13 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delet
     CSRF::verifyOrFail();
     $delId = (int)($_POST['participant_id'] ?? 0);
     if ($delId) {
-        $delP = Database::fetchOne('SELECT full_name, reference_number FROM participants WHERE id = ?', [$delId]);
+        $delP = Database::fetchOne(
+            'SELECT p.*, ec.name AS category_name, ec.distance
+             FROM participants p JOIN event_categories ec ON ec.id = p.category_id
+             WHERE p.id = ?',
+            [$delId]
+        );
         if ($delP) {
+            $deletedShirts = shirtOrdersAuditMap($delId);
             Database::execute('DELETE FROM shirt_orders WHERE participant_id = ?', [$delId]);
             Database::execute('DELETE FROM payments    WHERE participant_id = ?', [$delId]);
             Database::execute('DELETE FROM participants WHERE id = ?', [$delId]);
             auditLog('delete_participant', 'participants', $delId,
-                     ['full_name' => $delP['full_name'], 'reference_number' => $delP['reference_number']],
+                     participantAuditSnapshot($delP) + $deletedShirts,
                      null, (int)$admin['id']);
             setFlash('success', 'Participant "' . e($delP['full_name']) . '" has been permanently deleted.');
         }

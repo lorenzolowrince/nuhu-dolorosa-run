@@ -142,8 +142,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             [$categoryId]
         );
 
+        $newP = Database::fetchOne(
+            'SELECT p.*, ec.name AS category_name, ec.distance
+             FROM participants p JOIN event_categories ec ON ec.id = p.category_id
+             WHERE p.id = ?',
+            [$participantId]
+        ) ?? ['reference_number' => $refNumber];
         auditLog('manual_registration', 'participants', $participantId, null,
-                 ['reference' => $refNumber, 'name' => sanitize($_POST['full_name'])],
+                 participantAuditSnapshot($newP) + shirtOrdersAuditMap($participantId),
                  (int)$admin['id']);
 
         setFlash('success', "Manual registration added. Reference: {$refNumber}");

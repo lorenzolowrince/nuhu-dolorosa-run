@@ -42,6 +42,8 @@ class Auth
 
         if (!$user || !password_verify($password, $user['password'])) {
             self::recordFailedAttempt($ip);
+            auditLog('admin_login_failed', 'admin_users', $user ? (int) $user['id'] : null,
+                     null, ['username_entered' => mb_substr($username, 0, 100)]);
             return false;
         }
 
@@ -62,7 +64,7 @@ class Auth
             [$user['id']]
         );
 
-        auditLog('admin_login', 'admin_users', (int) $user['id']);
+        auditLog('admin_login', 'admin_users', (int) $user['id'], null, null, (int) $user['id']);
 
         return true;
     }

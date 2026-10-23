@@ -41,11 +41,12 @@ $RUNNER_CATS = ['Kanak-Kanak', 'Open', 'Veteran', 'Super Veteran'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delete_participant') {
     Auth::requireCan('registrations', 'delete');
     CSRF::verifyOrFail();
+    $deletedShirts = shirtOrdersAuditMap($id);
     Database::execute('DELETE FROM shirt_orders WHERE participant_id = ?', [$id]);
     Database::execute('DELETE FROM payments    WHERE participant_id = ?', [$id]);
     Database::execute('DELETE FROM participants WHERE id = ?', [$id]);
     auditLog('delete_participant', 'participants', $id,
-             ['full_name' => $participant['full_name'], 'reference_number' => $participant['reference_number']],
+             participantAuditSnapshot($participant) + $deletedShirts,
              null, (int)$admin['id']);
     setFlash('success', 'Participant "' . e($participant['full_name']) . '" has been permanently deleted.');
     redirect(APP_URL . '/admin/registrations.php');
@@ -66,8 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
                 'UPDATE participants SET registration_status = ? WHERE id = ?',
                 [$newStatus, $id]
             );
-            auditLog('update_status', 'participants', $id,
-                     ['status' => $old], ['status' => $newStatus], (int) $admin['id']);
+            if ($old !== $newStatus) {
+                auditLog('update_status', 'participants', $id,
+                         ['status' => $old], ['status' => $newStatus], (int) $admin['id']);
+            }
 
             if ($newStatus === 'Confirmed' && $old !== 'Confirmed') {
                 try {
@@ -100,6 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
                 'event_shirt_size' => $participant['event_shirt_size'],
             ];
             if ($is43km) $oldVals['finisher_shirt_size'] = $participant['finisher_shirt_size'];
+            $oldVals += shirtOrdersAuditMap($id);
 
             Database::execute(
                 'UPDATE participants SET race_category = ?, event_shirt_size = ?, finisher_shirt_size = ? WHERE id = ?',
@@ -107,8 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
             );
             $newVals = ['race_category' => $raceCat, 'event_shirt_size' => $eventSize];
             if ($is43km) $newVals['finisher_shirt_size'] = $finisherSize;
-
-            auditLog('update_race_details', 'participants', $id, $oldVals, $newVals, (int) $admin['id']);
 
             // Update optional shirt order sizes and quantities
             $soIds   = array_map('intval', $_POST['shirt_id']   ?? []);
@@ -124,6 +126,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
                         [$soSize, $soQty, $soId, $id]
                     );
                 }
+            }
+
+            [$logOld, $logNew] = auditDiff($oldVals, $newVals + shirtOrdersAuditMap($id));
+            if ($logNew) {
+                auditLog('update_race_details', 'participants', $id, $logOld, $logNew, (int) $admin['id']);
             }
 
             setFlash('success', 'Race details updated.');
@@ -205,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
                 'address'                 => $participant['address'],
                 'emergency_contact_name'  => $participant['emergency_contact_name'],
                 'emergency_contact_number'=> $participant['emergency_contact_number'],
-                'category_id'             => (string) $participant['category_id'],
+                'category'                => (string) $participant['category_name'],
                 'race_category'           => $participant['race_category'],
                 'event_shirt_size'        => $participant['event_shirt_size'],
                 'finisher_shirt_size'     => (string) ($participant['finisher_shirt_size'] ?? ''),
@@ -221,15 +228,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
                 'address'                 => $newAddress,
                 'emergency_contact_name'  => $newEcName,
                 'emergency_contact_number'=> $newEcNumber,
-                'category_id'             => (string) $newCatId,
+                'category'                => (string) $newCat['name'],
                 'race_category'           => $newRaceCat,
                 'event_shirt_size'        => $newEventSize,
                 'finisher_shirt_size'     => (string) ($is43km ? $newFinSize : ''),
             ];
-
-            // Only log actually changed fields
-            $changedKeys = array_keys(array_filter($newMap,
-                fn($v, $k) => $v !== ($oldMap[$k] ?? ''), ARRAY_FILTER_USE_BOTH));
+            $oldMap += shirtOrdersAuditMap($id);
 
             Database::execute(
                 'UPDATE participants SET
@@ -249,12 +253,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
                 ]
             );
 
-            if (!empty($changedKeys)) {
-                $logOld = array_intersect_key($oldMap, array_flip($changedKeys));
-                $logNew = array_intersect_key($newMap, array_flip($changedKeys));
-                auditLog('update_participant', 'participants', $id, $logOld, $logNew, (int) $admin['id']);
-            }
-
             // Update optional shirt order sizes and quantities
             $soIds   = array_map('intval', $_POST['shirt_id']   ?? []);
             $soSizes = $_POST['shirt_size'] ?? [];
@@ -269,6 +267,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && Auth::can('registrations', 'edit'))
                         [$soSize, $soQty, $soId, $id]
                     );
                 }
+            }
+
+            [$logOld, $logNew] = auditDiff($oldMap, $newMap + shirtOrdersAuditMap($id));
+            if ($logNew) {
+                auditLog('update_participant', 'participants', $id, $logOld, $logNew, (int) $admin['id']);
             }
 
             // Save receipt changes

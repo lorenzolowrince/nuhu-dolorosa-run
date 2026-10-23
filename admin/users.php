@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     [$username, $email, password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]), $fullName, $role]
                 );
                 auditLog('create_admin_user', 'admin_users', (int)Database::getInstance()->lastInsertId(),
-                         null, ['username' => $username, 'role' => $role], (int)$admin['id']);
+                         null, ['username' => $username, 'full_name' => $fullName, 'email' => $email, 'role' => $role], (int)$admin['id']);
                 setFlash('success', "User '{$username}' created successfully.");
                 redirect(APP_URL . '/admin/users.php');
             }
@@ -170,7 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user) {
                 Database::execute('DELETE FROM admin_users WHERE id = ?', [$targetId]);
                 auditLog('delete_admin_user', 'admin_users', $targetId,
-                         ['username' => $user['username']], null, (int)$admin['id']);
+                         array_intersect_key($user, array_flip(['username', 'full_name', 'email', 'role', 'last_login', 'created_at'])),
+                         null, (int)$admin['id']);
                 setFlash('success', "User '{$user['username']}' deleted.");
             }
         } else {

@@ -138,6 +138,54 @@ function eventCountdownSeconds(): int
     return max(0, $diff);
 }
 
+// --- Audit helpers ---
+
+// Form/security keys that must never be stored in the audit log
+function auditStripNoise(?array $values): ?array
+{
+    if ($values === null) return null;
+    $values = array_filter(
+        $values,
+        fn($k) => !in_array($k, ['_csrf_token', 'csrf_token', 'action'], true) && stripos((string) $k, 'password') === false,
+        ARRAY_FILTER_USE_KEY
+    );
+    return $values ?: null;
+}
+
+// Keep only the fields whose value actually changed. Returns [$oldChanged, $newChanged].
+function auditDiff(array $old, array $new): array
+{
+    $oldChanged = $newChanged = [];
+    foreach (array_unique(array_merge(array_keys($old), array_keys($new))) as $k) {
+        $o = $old[$k] ?? null;
+        $n = $new[$k] ?? null;
+        if ((string) $o !== (string) $n) {
+            $oldChanged[$k] = $o;
+            $newChanged[$k] = $n;
+        }
+    }
+    return [$oldChanged, $newChanged];
+}
+
+// Key details of a participant, kept in the log when a record is deleted
+function participantAuditSnapshot(array $p): array
+{
+    $keys = ['reference_number', 'full_name', 'email', 'contact_number', 'category_name', 'distance',
+             'race_category', 'registration_status', 'event_shirt_size', 'finisher_shirt_size', 'created_at'];
+    return array_intersect_key($p, array_flip($keys));
+}
+
+// Extra shirt orders of a participant as "Extra shirt #id" => "Event · M × 2"
+function shirtOrdersAuditMap(int $participantId): array
+{
+    $map = [];
+    foreach (Database::fetchAll('SELECT id, shirt_type, size, quantity FROM shirt_orders WHERE participant_id = ? ORDER BY id', [$participantId]) as $s) {
+        $type = $s['shirt_type'] ? ucfirst((string) $s['shirt_type']) . ' · ' : '';
+        $map['Extra shirt #' . $s['id']] = $type . $s['size'] . ' × ' . $s['quantity'];
+    }
+    return $map;
+}
+
 // --- Write audit log entry ---
 function auditLog(
     string  $action,
@@ -147,6 +195,8 @@ function auditLog(
     ?array  $newValues  = null,
     ?int    $adminId    = null
 ): void {
+    $oldValues = auditStripNoise($oldValues);
+    $newValues = auditStripNoise($newValues);
     try {
         Database::query(
             'INSERT INTO audit_logs
@@ -157,8 +207,8 @@ function auditLog(
                 $action,
                 $tableName,
                 $recordId,
-                $oldValues  ? json_encode($oldValues)  : null,
-                $newValues  ? json_encode($newValues)  : null,
+                $oldValues  ? json_encode($oldValues, JSON_UNESCAPED_UNICODE)  : null,
+                $newValues  ? json_encode($newValues, JSON_UNESCAPED_UNICODE)  : null,
                 getClientIP(),
                 substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 300),
             ]

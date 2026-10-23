@@ -56,11 +56,26 @@ if ($rowCount === 0) {
     Auth::refreshPermissions();
 }
 
+// Current matrix as "Role › Module › action" => Allowed/Denied, for the audit log
+function permissionsAuditMap(): array
+{
+    $map = [];
+    foreach (Database::fetchAll('SELECT role, module, can_view, can_edit, can_delete FROM role_permissions ORDER BY role, module') as $r) {
+        $mod = Permissions::MODULES[$r['module']] ?? null;
+        if (!$mod) continue;
+        foreach ($mod['actions'] as $act) {
+            $map[ucwords(str_replace('_', ' ', $r['role'])) . ' › ' . $mod['label'] . ' › ' . $act] = $r['can_' . $act] ? 'Allowed' : 'Denied';
+        }
+    }
+    return $map;
+}
+
 // ---- Handle POST: reset to defaults ----
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'reset_defaults') {
     Auth::requireCan('permissions', 'edit');
     CSRF::verifyOrFail();
 
+    $oldPerms = permissionsAuditMap();
     Database::execute('DELETE FROM role_permissions');
     foreach (Permissions::DEFAULTS as $role => $modules) {
         foreach ($modules as $module => $acts) {
@@ -72,6 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'reset
         }
     }
     self_bump_version((int) $admin['id']);
+    [$logOld, $logNew] = auditDiff($oldPerms, permissionsAuditMap());
+    auditLog('reset_permissions', 'role_permissions', null, $logOld ?: null, $logNew ?: null, (int) $admin['id']);
     Auth::refreshPermissions();
     setFlash('success', 'Permissions reset to default values.');
     redirect(APP_URL . '/admin/permissions.php');
@@ -82,7 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save'
     Auth::requireCan('permissions', 'edit');
     CSRF::verifyOrFail();
 
-    $adminId = (int) $admin['id'];
+    $adminId  = (int) $admin['id'];
+    $oldPerms = permissionsAuditMap();
 
     foreach (['admin', 'viewer', 'data_entry'] as $role) {
         foreach (Permissions::MODULES as $key => $modDef) {
@@ -108,7 +126,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save'
     }
 
     self_bump_version($adminId);
-    auditLog('update_permissions', 'role_permissions', null, null, ['saved_by' => $adminId], $adminId);
+    [$logOld, $logNew] = auditDiff($oldPerms, permissionsAuditMap());
+    if ($logNew) {
+        auditLog('update_permissions', 'role_permissions', null, $logOld, $logNew, $adminId);
+    }
     Auth::refreshPermissions();
 
     setFlash('success', 'Role permissions saved. All active sessions will pick up the changes on their next page load.');
