@@ -490,59 +490,65 @@ html { scroll-padding-top: 84px; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* Hero entrance — runs once */
-.site .hero-badge, .site .hero-title, .site .hero-event-name, .hero-meta, .hero-actions, .race-bib {
+.site .hero-badge, .site .hero-title, .site .hero-event-name, .hero-meta, .hero-actions {
     animation: hero-rise .8s var(--ease) both;
 }
 .site .hero-title      { animation-delay: .08s; }
 .site .hero-event-name { animation-delay: .16s; }
 .hero-meta             { animation-delay: .22s; }
 .hero-actions          { animation-delay: .28s; }
-.race-bib              { animation-delay: .36s; }
 @keyframes hero-rise {
     from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: none; }
 }
 
-/* Race bib countdown */
+/* Race bib countdown — a wide bib below the hero photo (never covers it) */
 .race-bib {
     position: relative;
-    max-width: 440px;
-    margin-left: auto;
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) 2fr;
+    margin: 0 0 36px;
     background: #FBF8F1;
     color: var(--ink);
     border-radius: 18px;
-    box-shadow: var(--sh-3), 0 0 0 1px rgba(255,255,255,.4) inset;
+    box-shadow: var(--sh-3);
     overflow: hidden;
-    rotate: -2deg;
 }
 .race-bib::before, .race-bib::after {   /* safety pins */
-    content: '';
+    content: "";
     position: absolute;
-    top: 56px;
+    top: 14px;
     width: 12px; height: 12px;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 35%, #fff, #b9b3c7 60%, #8d86a0);
     box-shadow: 0 1px 2px rgba(0,0,0,.3);
+    z-index: 1;
 }
 .race-bib::before { left: 14px; }
 .race-bib::after  { right: 14px; }
-.race-bib-top {
-    display: flex; justify-content: space-between;
-    background: linear-gradient(90deg, var(--plum), var(--violet));
+.race-bib-info {
+    display: flex; align-items: center; gap: 14px;
+    padding: 22px 28px 22px 36px;
+    background: linear-gradient(120deg, var(--plum), var(--violet));
     color: #fff;
-    padding: 10px 20px;
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
 }
+.race-bib-info img { border-radius: 50%; background: #fff; padding: 2px; flex-shrink: 0; }
+.race-bib-event {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    line-height: 1.05;
+}
+.race-bib-meta { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85); margin-top: 2px; }
 .site .race-bib .countdown-box {
     animation: none;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    align-items: center;
     gap: 0;
-    padding: 26px 30px 18px;
+    padding: 20px 36px 18px 24px;
 }
 .site .race-bib .countdown-unit {
     background: none;
@@ -557,7 +563,7 @@ html { scroll-padding-top: 84px; }
 .site .race-bib .countdown-unit + .countdown-unit { border-left: 1px dashed var(--line-2); }
 .site .race-bib .count-num {
     font-family: var(--font-display);
-    font-size: clamp(2.6rem, 6vw, 3.6rem);
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
     font-weight: 800;
     color: var(--ink);
     line-height: 1;
@@ -579,16 +585,6 @@ html { scroll-padding-top: 84px; }
     font-weight: 800;
     color: var(--plum);
 }
-.race-bib-bottom {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 20px 16px;
-    border-top: 1px dashed var(--line-2);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-}
-.race-bib-bottom img { border-radius: 50%; }
-
 .hero-photo-btn {
     position: absolute;
     right: 24px; bottom: 112px;
@@ -1552,9 +1548,9 @@ html { scroll-padding-top: 84px; }
             linear-gradient(180deg, rgba(22,13,43,.9) 0%, rgba(22,13,43,.78) 55%, var(--ink) 100%),
             url('../images/hero-bg.jpeg') center 35% / cover no-repeat;
     }
-    .race-bib { margin: 0 auto; rotate: -1deg; }
     .hero-photo-btn { bottom: 96px; right: 16px; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .race-bib { grid-template-columns: 1fr; }
     .stat-tile:nth-child(3) { border-left: 0; }
     .stat-tile:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,.1); }
     .steps { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
@@ -1577,11 +1573,11 @@ html { scroll-padding-top: 84px; }
 @media (max-width: 575.98px) {
     .site .hero-title { font-size: 4.4rem; }
     .hero-actions .btn { flex: 1 1 100%; text-align: center; }
-    .site .race-bib .countdown-box { padding: 20px 14px 14px; }
-    .site .race-bib .count-num { font-size: 2.5rem; }
+    .site .race-bib .countdown-box { padding: 18px 12px 16px; }
+    .site .race-bib .count-num { font-size: 2.4rem; }
     .site .race-bib .count-label { font-size: 9.5px; letter-spacing: .1em; }
-    .race-bib-top { font-size: 13px; padding: 9px 16px; }
-    .race-bib::before, .race-bib::after { top: 50px; }
+    .race-bib-info { padding: 16px 20px 16px 34px; }
+    .race-bib-event { font-size: 1.35rem; }
     .stat-tile { padding: 20px 12px; gap: 12px; flex-direction: column; align-items: flex-start; }
     .steps { grid-template-columns: 1fr; }
     .step { display: grid; grid-template-columns: 56px 1fr; column-gap: 18px; text-align: left; }

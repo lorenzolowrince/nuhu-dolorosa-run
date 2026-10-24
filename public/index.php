@@ -64,38 +64,6 @@ include PUBLIC_PATH . '/includes/header.php';
                     </a>
                 </div>
             </div>
-
-            <div class="col-lg-5">
-                <!-- Countdown, styled as a race bib -->
-                <div class="race-bib">
-                    <div class="race-bib-top">
-                        <span>Ultra Trail 3.0</span>
-                        <span>19 · 12 · 2026</span>
-                    </div>
-                    <div class="countdown-box" id="countdown" role="timer" aria-live="off">
-                        <div class="countdown-unit">
-                            <span class="count-num" id="days">00</span>
-                            <span class="count-label"><?= __('countdown.days') ?></span>
-                        </div>
-                        <div class="countdown-unit">
-                            <span class="count-num" id="hours">00</span>
-                            <span class="count-label"><?= __('countdown.hours') ?></span>
-                        </div>
-                        <div class="countdown-unit">
-                            <span class="count-num" id="minutes">00</span>
-                            <span class="count-label"><?= __('countdown.minutes') ?></span>
-                        </div>
-                        <div class="countdown-unit">
-                            <span class="count-num" id="seconds">00</span>
-                            <span class="count-label"><?= __('countdown.seconds') ?></span>
-                        </div>
-                    </div>
-                    <div class="race-bib-bottom">
-                        <img src="<?= $img ?>/web/nddk-logo-160.png" alt="" width="40" height="40">
-                        <span>Kimanis, Papar, Sabah</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -118,6 +86,35 @@ include PUBLIC_PATH . '/includes/header.php';
 <!-- ============================================================ -->
 <section class="stats-band" aria-label="Event at a glance">
     <div class="container">
+        <!-- Countdown, styled as a race bib — sits below the photo so it never covers it -->
+        <div class="race-bib">
+            <div class="race-bib-info">
+                <img src="<?= $img ?>/web/nddk-logo-160.png" alt="" width="48" height="48">
+                <div>
+                    <div class="race-bib-event">Ultra Trail 3.0</div>
+                    <div class="race-bib-meta">19 · 12 · 2026 · Kimanis, Papar, Sabah</div>
+                </div>
+            </div>
+            <div class="countdown-box" id="countdown" role="timer" aria-live="off">
+                <div class="countdown-unit">
+                    <span class="count-num" id="days">00</span>
+                    <span class="count-label"><?= __('countdown.days') ?></span>
+                </div>
+                <div class="countdown-unit">
+                    <span class="count-num" id="hours">00</span>
+                    <span class="count-label"><?= __('countdown.hours') ?></span>
+                </div>
+                <div class="countdown-unit">
+                    <span class="count-num" id="minutes">00</span>
+                    <span class="count-label"><?= __('countdown.minutes') ?></span>
+                </div>
+                <div class="countdown-unit">
+                    <span class="count-num" id="seconds">00</span>
+                    <span class="count-label"><?= __('countdown.seconds') ?></span>
+                </div>
+            </div>
+        </div>
+
         <div class="stats-grid">
             <?php
             $stats = [
