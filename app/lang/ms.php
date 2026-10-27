@@ -22,6 +22,8 @@ return [
 
     // ---- Stats ----
     'stats.participants' => 'Peserta',
+    'stats.edition'      => 'Edisi',
+    'stats.edition_val'  => 'Ke-3',
     'stats.categories'   => 'Kategori Lumba',
     'stats.starting'     => 'Bermula Dari',
     'stats.charity'      => 'Untuk Kebajikan',

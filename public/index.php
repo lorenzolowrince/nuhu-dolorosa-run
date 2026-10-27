@@ -118,7 +118,7 @@ include PUBLIC_PATH . '/includes/header.php';
         <div class="stats-grid">
             <?php
             $stats = [
-                ['icon' => 'fas fa-users',              'value' => '900+',   'label' => __('stats.participants')],
+                ['icon' => 'fas fa-flag-checkered',     'value' => __('stats.edition_val'), 'label' => __('stats.edition')],
                 ['icon' => 'fas fa-route',              'value' => '3',      'label' => __('stats.categories')],
                 ['icon' => 'fas fa-trophy',             'value' => 'RM 85+', 'label' => __('stats.starting')],
                 ['icon' => 'fas fa-hand-holding-heart', 'value' => '100%',   'label' => __('stats.charity')],

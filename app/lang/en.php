@@ -22,6 +22,8 @@ return [
 
     // ---- Stats ----
     'stats.participants' => 'Participants',
+    'stats.edition'      => 'Edition',
+    'stats.edition_val'  => '3rd',
     'stats.categories'   => 'Race Categories',
     'stats.starting'     => 'Starting From',
     'stats.charity'      => 'For Charity',
