@@ -469,10 +469,10 @@ include PUBLIC_PATH . '/includes/header.php';
                     $finisherPreview = function (string $group): string {
                         $img = APP_URL . '/assets/images';
                         $out = '<div class="shirt-preview" data-lightbox-group="' . $group . '">';
-                        foreach (['front' => [202, 'fin.shirt_front'], 'back' => [171, 'fin.shirt_back']] as $side => [$h, $key]) {
+                        foreach (['front' => [195, 'fin.shirt_front'], 'back' => [194, 'fin.shirt_back']] as $side => [$h, $key]) {
                             $label = e(__($key));
-                            $out .= '<button type="button" class="shirt-preview-btn" data-full="' . $img . '/finisher-shirt-' . $side . '.jpg" aria-label="' . $label . '">'
-                                  . '<img src="' . $img . '/web/finisher-shirt-' . $side . '-160.jpg" alt="' . $label . '" width="160" height="' . $h . '" loading="lazy" decoding="async"></button>';
+                            $out .= '<button type="button" class="shirt-preview-btn" data-full="' . $img . '/finisher-shirt-' . $side . '-v2.jpg" aria-label="' . $label . '">'
+                                  . '<img src="' . $img . '/web/finisher-shirt-' . $side . '-v2-160.jpg" alt="' . $label . '" width="160" height="' . $h . '" loading="lazy" decoding="async"></button>';
                         }
                         return $out . '<span class="shirt-preview-text"><i class="fas fa-search-plus me-1" aria-hidden="true"></i>' . __('fin.preview') . '</span></div>';
                     };

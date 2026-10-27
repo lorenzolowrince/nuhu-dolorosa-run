@@ -359,12 +359,12 @@ include PUBLIC_PATH . '/includes/header.php';
                         <span class="reward-icon"><i class="fas fa-tshirt" aria-hidden="true"></i></span>
                     </div>
                     <div class="reward-photos" data-lightbox-group="finisher-shirt">
-                        <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-front.jpg" aria-label="<?= e(__('fin.shirt_front')) ?>">
-                            <img src="<?= $img ?>/web/finisher-shirt-front-700.jpg" alt="<?= e(__('fin.shirt_front')) ?>" width="700" height="882" loading="lazy" decoding="async">
+                        <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-front-v2.jpg" aria-label="<?= e(__('fin.shirt_front')) ?>">
+                            <img src="<?= $img ?>/web/finisher-shirt-front-v2-700.jpg" alt="<?= e(__('fin.shirt_front')) ?>" width="635" height="772" loading="lazy" decoding="async">
                             <span class="reward-tag"><?= __('fin.front') ?></span>
                         </button>
-                        <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-back.jpg" aria-label="<?= e(__('fin.shirt_back')) ?>">
-                            <img src="<?= $img ?>/web/finisher-shirt-back-700.jpg" alt="<?= e(__('fin.shirt_back')) ?>" width="700" height="749" loading="lazy" decoding="async">
+                        <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-back-v2.jpg" aria-label="<?= e(__('fin.shirt_back')) ?>">
+                            <img src="<?= $img ?>/web/finisher-shirt-back-v2-700.jpg" alt="<?= e(__('fin.shirt_back')) ?>" width="638" height="772" loading="lazy" decoding="async">
                             <span class="reward-tag"><?= __('fin.back') ?></span>
                         </button>
                     </div>
