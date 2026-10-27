@@ -304,6 +304,83 @@ include PUBLIC_PATH . '/includes/header.php';
 </section>
 
 <!-- ============================================================ -->
+<!-- FINISHER REWARDS (medal & finisher T-shirt) -->
+<!-- ============================================================ -->
+<section class="section rewards-section" id="rewards">
+    <div class="container">
+        <div class="section-head text-center">
+            <div class="section-label"><?= __('fin.label') ?></div>
+            <h2 class="section-title"><?= __('fin.title') ?></h2>
+            <p class="section-sub section-sub-muted"><?= __('fin.sub') ?></p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <!-- Medal -->
+            <div class="col-lg-6">
+                <article class="panel reward-card reveal">
+                    <div class="reward-head">
+                        <div>
+                            <h3 class="panel-title"><?= __('fin.medal_title') ?></h3>
+                            <p class="panel-kicker mb-0"><?= __('fin.medal_kicker') ?></p>
+                        </div>
+                        <span class="reward-icon"><i class="fas fa-medal" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="reward-photos" data-lightbox-group="medal">
+                        <button type="button" class="reward-photo" data-full="<?= $img ?>/medal-finisher.jpg" aria-label="<?= e(strip_tags(__('fin.medal_a'))) ?>">
+                            <img src="<?= $img ?>/web/medal-finisher-700.jpg" alt="<?= e(strip_tags(__('fin.medal_a'))) ?>" width="700" height="792" loading="lazy" decoding="async">
+                        </button>
+                        <button type="button" class="reward-photo" data-full="<?= $img ?>/medal-ultra-trail.jpg" aria-label="<?= e(strip_tags(__('fin.medal_b'))) ?>">
+                            <img src="<?= $img ?>/web/medal-ultra-trail-700.jpg" alt="<?= e(strip_tags(__('fin.medal_b'))) ?>" width="700" height="815" loading="lazy" decoding="async">
+                        </button>
+                    </div>
+                    <dl class="spec-list">
+                        <div><dt><?= __('fin.spec_diameter') ?></dt><dd>80 mm</dd></div>
+                        <div><dt><?= __('fin.spec_hanger') ?></dt><dd>35 × 8 mm</dd></div>
+                        <div><dt><?= __('fin.spec_slot') ?></dt><dd>30 mm</dd></div>
+                    </dl>
+                    <button type="button" class="btn-copy reward-size-btn"
+                            onclick="openLightbox('<?= $img ?>/medal-size.jpg', this.dataset.caption)"
+                            data-caption="Medal size — 80 mm diameter, 35 × 8 mm hanger, 30 mm ribbon slot">
+                        <i class="fas fa-ruler-combined me-1" aria-hidden="true"></i><?= __('fin.size_btn') ?>
+                    </button>
+                </article>
+            </div>
+
+            <!-- Finisher T-shirt -->
+            <div class="col-lg-6">
+                <article class="panel reward-card reward-card-dark reveal">
+                    <div class="reward-head">
+                        <div>
+                            <h3 class="panel-title"><?= __('fin.shirt_title') ?></h3>
+                            <p class="panel-kicker mb-0"><?= __('fin.shirt_kicker') ?></p>
+                        </div>
+                        <span class="reward-icon"><i class="fas fa-tshirt" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="reward-photos" data-lightbox-group="finisher-shirt">
+                        <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-front.jpg" aria-label="<?= e(__('fin.shirt_front')) ?>">
+                            <img src="<?= $img ?>/web/finisher-shirt-front-700.jpg" alt="<?= e(__('fin.shirt_front')) ?>" width="700" height="882" loading="lazy" decoding="async">
+                        </button>
+                        <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-back.jpg" aria-label="<?= e(__('fin.shirt_back')) ?>">
+                            <img src="<?= $img ?>/web/finisher-shirt-back-700.jpg" alt="<?= e(__('fin.shirt_back')) ?>" width="700" height="749" loading="lazy" decoding="async">
+                        </button>
+                    </div>
+                    <ul class="reward-points">
+                        <li><i class="fas fa-gift" aria-hidden="true"></i><span><?= __('fin.shirt_incl') ?></span></li>
+                        <li><i class="fas fa-shopping-bag" aria-hidden="true"></i><span><?= __('fin.shirt_buy') ?> — <strong>RM <?= number_format((float)getSetting('shirt_price', '40'), 0) ?></strong></span></li>
+                    </ul>
+                    <?php if ($registrationOpen): ?>
+                    <a href="<?= APP_URL ?>/register.php" class="btn btn-hero-primary align-self-start">
+                        <?= __('about.register') ?> <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
+                    </a>
+                    <?php endif; ?>
+                </article>
+            </div>
+        </div>
+        <p class="zoom-hint"><i class="fas fa-search-plus me-1" aria-hidden="true"></i><?= __('ui.enlarge') ?></p>
+    </div>
+</section>
+
+<!-- ============================================================ -->
 <!-- SHIRT SHOWCASE -->
 <!-- ============================================================ -->
 <?php

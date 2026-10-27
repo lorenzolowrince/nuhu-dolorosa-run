@@ -365,4 +365,23 @@ return [
     'ui.field_required' => 'Ruangan ini wajib diisi.',
     'ui.fix_fields'     => 'Sila lengkapkan ruangan yang ditandakan.',
     'ui.admin'          => 'Log masuk admin',
+
+    // ---- Finisher rewards (medal & finisher T-shirt) ----
+    'fin.label'         => 'Ganjaran Penamat',
+    'fin.title'         => 'Medal &amp; <span class="text-warning">T-Shirt</span> Penamat',
+    'fin.sub'           => 'Setiap pelari yang menamatkan larian akan menerima medal penamat. Penamat 43KM juga akan menerima T-Shirt Penamat.',
+    'fin.medal_title'   => 'Medal Penamat',
+    'fin.medal_kicker'  => 'Untuk semua jarak — 7KM, 15KM &amp; 43KM',
+    'fin.medal_a'       => 'Medal Penamat — St. Anne Run for Charity, Edisi Ke-3',
+    'fin.medal_b'       => 'Medal Penamat — Nuhu Dolorosa Ultra Trail 3.0, Run for Hope',
+    'fin.spec_diameter' => 'Diameter',
+    'fin.spec_hanger'   => 'Penyangkut reben',
+    'fin.spec_slot'     => 'Lubang reben',
+    'fin.size_btn'      => 'Lihat lukisan saiz',
+    'fin.shirt_title'   => 'T-Shirt Penamat',
+    'fin.shirt_kicker'  => '43KM Ultra Trail',
+    'fin.shirt_front'   => 'T-Shirt Penamat — depan',
+    'fin.shirt_back'    => 'T-Shirt Penamat — belakang',
+    'fin.shirt_incl'    => 'Disertakan untuk setiap peserta 43KM',
+    'fin.shirt_buy'     => 'Sesiapa sahaja boleh menempah semasa mendaftar',
 ];

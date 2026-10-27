@@ -365,4 +365,23 @@ return [
     'ui.field_required' => 'This field is required.',
     'ui.fix_fields'     => 'Please complete the highlighted fields.',
     'ui.admin'          => 'Admin login',
+
+    // ---- Finisher rewards (medal & finisher T-shirt) ----
+    'fin.label'         => 'Finisher Rewards',
+    'fin.title'         => 'Medal &amp; Finisher <span class="text-warning">T-Shirt</span>',
+    'fin.sub'           => 'Every runner who crosses the finish line receives the finisher medal. 43KM finishers also take home the Finisher T-Shirt.',
+    'fin.medal_title'   => 'Finisher Medal',
+    'fin.medal_kicker'  => 'For all distances — 7KM, 15KM &amp; 43KM',
+    'fin.medal_a'       => 'Finisher Medal — St. Anne Run for Charity, 3rd Edition',
+    'fin.medal_b'       => 'Finisher Medal — Nuhu Dolorosa Ultra Trail 3.0, Run for Hope',
+    'fin.spec_diameter' => 'Diameter',
+    'fin.spec_hanger'   => 'Ribbon hanger',
+    'fin.spec_slot'     => 'Ribbon slot',
+    'fin.size_btn'      => 'View size drawing',
+    'fin.shirt_title'   => 'Finisher T-Shirt',
+    'fin.shirt_kicker'  => '43KM Ultra Trail',
+    'fin.shirt_front'   => 'Finisher T-Shirt — front',
+    'fin.shirt_back'    => 'Finisher T-Shirt — back',
+    'fin.shirt_incl'    => 'Included for every 43KM participant',
+    'fin.shirt_buy'     => 'Anyone can order one when registering',
 ];

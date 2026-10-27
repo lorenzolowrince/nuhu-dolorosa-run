@@ -898,6 +898,76 @@ html { scroll-padding-top: 84px; }
 .site .shirt-note i { color: var(--gold); margin-top: 4px; }
 
 /* ============================================================
+   FINISHER REWARDS (medal & finisher T-shirt)
+   ============================================================ */
+.rewards-section { background: var(--paper); }
+.reward-card { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+.panel.reward-card-dark {
+    background:
+        radial-gradient(500px 260px at 100% 0%, rgba(220,38,38,.28), transparent 60%),
+        var(--ink);
+    border-color: rgba(255,255,255,.08);
+    color: #fff;
+}
+.site .reward-card-dark .panel-title { color: #fff; }
+.reward-card-dark .panel-kicker { color: #FF8A80; }
+.reward-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.reward-icon {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 14px;
+    background: var(--gold-bg);
+    color: var(--gold-d);
+    font-size: 20px;
+}
+.reward-card-dark .reward-icon { background: rgba(255,255,255,.08); color: var(--gold); }
+.reward-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.reward-photo {
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: #fff;
+    cursor: zoom-in;
+    overflow: hidden;
+    transition: transform .3s var(--ease), box-shadow .3s;
+}
+.reward-photo:hover { transform: translateY(-3px); box-shadow: var(--sh-2); }
+.reward-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 7 / 8;
+    object-fit: contain;
+    transition: transform .5s var(--ease);
+}
+.reward-photo:hover img { transform: scale(1.04); }
+.spec-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+}
+.spec-list > div { padding: 12px 14px; }
+.spec-list > div + div { border-left: 1px solid var(--line); }
+.spec-list dt { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.spec-list dd {
+    margin: 2px 0 0;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+}
+.reward-size-btn { align-self: flex-start; margin: -4px 0 0; padding: 8px 16px; font-size: 13.5px; }
+.reward-points { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.reward-points li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; color: rgba(255,255,255,.88); }
+.reward-points i { color: var(--gold); margin-top: 4px; width: 16px; }
+.reward-points strong { color: var(--gold); }
+.reward-card-dark .btn-hero-primary { margin-top: auto; }
+
+/* ============================================================
    SHIRT SHOWCASE
    ============================================================ */
 .shirt-section { background: var(--surface); }
@@ -1584,6 +1654,11 @@ html { scroll-padding-top: 84px; }
     .step-marker { grid-row: span 3; margin: 0; }
     .site .step-icon { display: none; }
     .panel { padding: 24px 20px; }
+    /* Measurements stack as rows on phones */
+    .spec-list { grid-template-columns: 1fr; }
+    .spec-list > div { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 14px; }
+    .spec-list > div + div { border-left: 0; border-top: 1px solid var(--line); }
+    .spec-list dd { font-size: 1.35rem; margin: 0; }
     .bank-card-row { flex-direction: column; gap: 2px; }
     .bank-card-row strong { text-align: left; }
     .site .form-card-body { padding: 20px 16px; }
