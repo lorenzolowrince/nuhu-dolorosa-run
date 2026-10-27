@@ -464,6 +464,20 @@ include PUBLIC_PATH . '/includes/header.php';
                         </div>
                     </div>
 
+                    <?php
+                    // Finisher T-shirt thumbnails (front/back) that open in the image viewer
+                    $finisherPreview = function (string $group): string {
+                        $img = APP_URL . '/assets/images';
+                        $out = '<div class="shirt-preview" data-lightbox-group="' . $group . '">';
+                        foreach (['front' => [202, 'fin.shirt_front'], 'back' => [171, 'fin.shirt_back']] as $side => [$h, $key]) {
+                            $label = e(__($key));
+                            $out .= '<button type="button" class="shirt-preview-btn" data-full="' . $img . '/finisher-shirt-' . $side . '.jpg" aria-label="' . $label . '">'
+                                  . '<img src="' . $img . '/web/finisher-shirt-' . $side . '-160.jpg" alt="' . $label . '" width="160" height="' . $h . '" loading="lazy" decoding="async"></button>';
+                        }
+                        return $out . '<span class="shirt-preview-text"><i class="fas fa-search-plus me-1" aria-hidden="true"></i>' . __('fin.preview') . '</span></div>';
+                    };
+                    ?>
+
                     <!-- ======= STEP 4: T-SHIRT ======= -->
                     <div class="form-card">
                         <div class="form-card-header">
@@ -526,6 +540,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                         <div class="invalid-feedback"><?= e($errors['finisher_shirt_size']) ?></div>
                                     <?php endif; ?>
                                     <div class="size-surcharge-alert" id="finisherSizeAlert" style="display:none;"></div>
+                                    <?= $finisherPreview('finisher-shirt-included') ?>
                                 </div>
                             </div>
 
@@ -577,6 +592,7 @@ include PUBLIC_PATH . '/includes/header.php';
                             <!-- Extra Finisher T-Shirt purchase -->
                             <div class="mb-2">
                                 <label class="form-label fw-600"><?= __('reg.buy_finisher_q') ?></label>
+                                <?= $finisherPreview('finisher-shirt-extra') ?>
                                 <div class="d-flex gap-3 mb-2">
                                     <div class="form-check form-check-custom">
                                         <input class="form-check-input" type="radio" name="buy_finisher" id="buyFinisherYes" value="yes"

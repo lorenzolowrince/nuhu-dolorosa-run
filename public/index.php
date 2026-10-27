@@ -328,9 +328,11 @@ include PUBLIC_PATH . '/includes/header.php';
                     <div class="reward-photos" data-lightbox-group="medal">
                         <button type="button" class="reward-photo" data-full="<?= $img ?>/medal-finisher.jpg" aria-label="<?= e(strip_tags(__('fin.medal_a'))) ?>">
                             <img src="<?= $img ?>/web/medal-finisher-700.jpg" alt="<?= e(strip_tags(__('fin.medal_a'))) ?>" width="700" height="792" loading="lazy" decoding="async">
+                            <span class="reward-tag"><?= __('fin.front') ?></span>
                         </button>
                         <button type="button" class="reward-photo" data-full="<?= $img ?>/medal-ultra-trail.jpg" aria-label="<?= e(strip_tags(__('fin.medal_b'))) ?>">
                             <img src="<?= $img ?>/web/medal-ultra-trail-700.jpg" alt="<?= e(strip_tags(__('fin.medal_b'))) ?>" width="700" height="815" loading="lazy" decoding="async">
+                            <span class="reward-tag"><?= __('fin.back') ?></span>
                         </button>
                     </div>
                     <dl class="spec-list">
@@ -359,9 +361,11 @@ include PUBLIC_PATH . '/includes/header.php';
                     <div class="reward-photos" data-lightbox-group="finisher-shirt">
                         <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-front.jpg" aria-label="<?= e(__('fin.shirt_front')) ?>">
                             <img src="<?= $img ?>/web/finisher-shirt-front-700.jpg" alt="<?= e(__('fin.shirt_front')) ?>" width="700" height="882" loading="lazy" decoding="async">
+                            <span class="reward-tag"><?= __('fin.front') ?></span>
                         </button>
                         <button type="button" class="reward-photo" data-full="<?= $img ?>/finisher-shirt-back.jpg" aria-label="<?= e(__('fin.shirt_back')) ?>">
                             <img src="<?= $img ?>/web/finisher-shirt-back-700.jpg" alt="<?= e(__('fin.shirt_back')) ?>" width="700" height="749" loading="lazy" decoding="async">
+                            <span class="reward-tag"><?= __('fin.back') ?></span>
                         </button>
                     </div>
                     <ul class="reward-points">

@@ -924,6 +924,7 @@ html { scroll-padding-top: 84px; }
 .reward-card-dark .reward-icon { background: rgba(255,255,255,.08); color: var(--gold); }
 .reward-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .reward-photo {
+    position: relative;
     padding: 10px;
     border: 1px solid var(--line);
     border-radius: var(--r-md);
@@ -941,6 +942,34 @@ html { scroll-padding-top: 84px; }
     transition: transform .5s var(--ease);
 }
 .reward-photo:hover img { transform: scale(1.04); }
+.reward-tag {
+    position: absolute;
+    top: 8px; left: 8px;
+    z-index: 1;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.reward-card-dark .reward-tag { background: var(--gold); color: var(--ink); }
+
+/* Finisher T-shirt thumbnails on the registration form */
+.shirt-preview { display: flex; align-items: center; gap: 8px; margin: 10px 0 12px; }
+.shirt-preview-btn {
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    cursor: zoom-in;
+    transition: transform .2s var(--ease), box-shadow .2s;
+}
+.shirt-preview-btn:hover { transform: translateY(-2px); box-shadow: var(--sh-2); }
+.shirt-preview-btn img { display: block; width: 56px; height: 64px; object-fit: contain; }
+.shirt-preview-text { font-size: .8rem; color: var(--muted); }
 .spec-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

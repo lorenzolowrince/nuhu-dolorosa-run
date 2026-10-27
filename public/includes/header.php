@@ -24,7 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS (style.css is shared with admin; site.css is the public design layer) -->
     <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/site.css?v=4">
+    <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/site.css?v=5">
     <script>
     /* Hide scroll-reveal elements before first paint (skipped for reduced motion).
        If main.js never runs, the timeout shows everything anyway. */
