@@ -518,7 +518,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                     <select name="event_shirt_size" class="form-select <?= isset($errors['event_shirt_size']) ? 'is-invalid' : '' ?>" required>
                                         <option value=""><?= __('reg.shirt_size_ph') ?></option>
                                         <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                            <option value="<?= $sz ?>" <?= ($formData['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                            <option value="<?= $sz ?>" <?= ($formData['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                     <?php if (isset($errors['event_shirt_size'])): ?>
@@ -533,7 +533,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                     <select name="finisher_shirt_size" class="form-select <?= isset($errors['finisher_shirt_size']) ? 'is-invalid' : '' ?>" id="finisherShirtSize">
                                         <option value=""><?= __('reg.shirt_size_ph') ?></option>
                                         <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                            <option value="<?= $sz ?>" <?= ($formData['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                            <option value="<?= $sz ?>" <?= ($formData['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                     <?php if (isset($errors['finisher_shirt_size'])): ?>
@@ -570,7 +570,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                         <select name="extra_event_size" class="form-select <?= isset($errors['extra_event_size']) ? 'is-invalid' : '' ?>">
                                             <option value=""><?= __('reg.shirt_size_ph') ?></option>
                                             <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                                <option value="<?= $sz ?>" <?= ($formData['extra_event_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                                <option value="<?= $sz ?>" <?= ($formData['extra_event_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                         <?php if (isset($errors['extra_event_size'])): ?>
@@ -611,7 +611,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                         <select name="extra_finisher_size" class="form-select <?= isset($errors['extra_finisher_size']) ? 'is-invalid' : '' ?>">
                                             <option value=""><?= __('reg.shirt_size_ph') ?></option>
                                             <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                                <option value="<?= $sz ?>" <?= ($formData['extra_finisher_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                                <option value="<?= $sz ?>" <?= ($formData['extra_finisher_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                         <?php if (isset($errors['extra_finisher_size'])): ?>

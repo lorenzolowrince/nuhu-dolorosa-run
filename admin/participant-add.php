@@ -322,7 +322,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                 <select name="event_shirt_size" class="form-select form-select-sm" required onchange="updateTotal()">
                                     <option value="">Select size</option>
                                     <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                        <option value="<?= $sz ?>" <?= ($old['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                        <option value="<?= $sz ?>" <?= ($old['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -331,7 +331,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                 <select name="finisher_shirt_size" class="form-select form-select-sm" id="finisherSizeSelect" onchange="updateTotal()">
                                     <option value="">Select size</option>
                                     <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                        <option value="<?= $sz ?>" <?= ($old['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                        <option value="<?= $sz ?>" <?= ($old['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -347,7 +347,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                             <div id="extraEventFields" style="display:<?= !empty($old['want_extra_event']) ? 'flex' : 'none' ?>;gap:.5rem;" class="mb-2">
                                 <select name="extra_event_size" class="form-select form-select-sm" style="width:auto;" onchange="updateTotal()">
                                     <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                        <option value="<?= $sz ?>" <?= ($old['extra_event_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                        <option value="<?= $sz ?>" <?= ($old['extra_event_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <input type="number" name="extra_event_qty" class="form-control form-control-sm" style="width:70px;"
@@ -364,7 +364,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                             <div id="finisherBuyFields" style="display:<?= !empty($old['want_finisher']) ? 'flex' : 'none' ?>;gap:.5rem;">
                                 <select name="finisher_buy_size" class="form-select form-select-sm" style="width:auto;" onchange="updateTotal()">
                                     <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                        <option value="<?= $sz ?>" <?= ($old['finisher_buy_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                        <option value="<?= $sz ?>" <?= ($old['finisher_buy_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <input type="number" name="finisher_buy_qty" class="form-control form-control-sm" style="width:70px;"

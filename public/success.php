@@ -91,12 +91,12 @@ include PUBLIC_PATH . '/includes/header.php';
                         <table class="table table-sm table-borderless mb-0">
                             <tr>
                                 <th class="text-muted fw-normal" width="50%"><?= __('suc.event_shirt') ?></th>
-                                <td><?= e($participant['event_shirt_size']) ?></td>
+                                <td><?= e(shirtSizeLabel($participant['event_shirt_size'])) ?></td>
                             </tr>
                             <?php if (!empty($participant['finisher_shirt_size'])): ?>
                             <tr>
                                 <th class="text-muted fw-normal"><?= __('suc.finisher_shirt') ?></th>
-                                <td><?= e($participant['finisher_shirt_size']) ?></td>
+                                <td><?= e(shirtSizeLabel($participant['finisher_shirt_size'])) ?></td>
                             </tr>
                             <?php endif; ?>
                             <?php foreach ($shirtOrders as $order): ?>
@@ -105,7 +105,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                     <?= $order['shirt_type'] === 'Finisher' ? __('suc.extra_finisher') : __('suc.extra_event') ?>
                                     <span class="text-muted">(<?= __('suc.purchased') ?>)</span>
                                 </th>
-                                <td><?= e($order['size']) ?> &times;<?= $order['quantity'] ?> — <?= formatMYR((float)$order['total_price']) ?></td>
+                                <td><?= e(shirtSizeLabel($order['size'])) ?> &times;<?= $order['quantity'] ?> — <?= formatMYR((float)$order['total_price']) ?></td>
                             </tr>
                             <?php endforeach; ?>
                         </table>

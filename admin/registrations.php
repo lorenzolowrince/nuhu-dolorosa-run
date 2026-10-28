@@ -251,11 +251,11 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                     <span class="badge bg-secondary"><?= e($reg['race_category'] ?? '—') ?></span>
                                 </td>
                                 <td>
-                                    <span class="badge bg-info text-dark"><?= e($reg['event_shirt_size'] ?? '—') ?></span>
+                                    <span class="badge bg-info text-dark"><?= e(shirtSizeLabel($reg['event_shirt_size'] ?? '—')) ?></span>
                                 </td>
                                 <td>
                                     <?php if ($reg['finisher_shirt_size']): ?>
-                                        <span class="badge bg-warning text-dark"><?= e($reg['finisher_shirt_size']) ?></span>
+                                        <span class="badge bg-warning text-dark"><?= e(shirtSizeLabel($reg['finisher_shirt_size'])) ?></span>
                                     <?php else: ?>
                                         <span class="text-muted">—</span>
                                     <?php endif; ?>

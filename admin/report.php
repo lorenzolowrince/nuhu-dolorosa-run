@@ -415,7 +415,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                 $pct = $eventTotal > 0 ? round($s['total'] / $eventTotal * 100) : 0;
                             ?>
                             <tr>
-                                <td><span class="badge bg-info text-dark"><?= e($s['size']) ?></span></td>
+                                <td><span class="badge bg-info text-dark"><?= e(shirtSizeLabel($s['size'])) ?></span></td>
                                 <td class="text-center fw-600"><?= number_format((int)$s['total']) ?></td>
                                 <td class="text-center text-muted"><?= $pct ?>%</td>
                             </tr>
@@ -457,7 +457,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                 $pct = $finTotal > 0 ? round($s['total'] / $finTotal * 100) : 0;
                             ?>
                             <tr>
-                                <td><span class="badge bg-warning text-dark"><?= e($s['size']) ?></span></td>
+                                <td><span class="badge bg-warning text-dark"><?= e(shirtSizeLabel($s['size'])) ?></span></td>
                                 <td class="text-center fw-600"><?= number_format((int)$s['total']) ?></td>
                                 <td class="text-center text-muted"><?= $pct ?>%</td>
                             </tr>
@@ -508,7 +508,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                 <div class="d-flex flex-wrap gap-1 mt-2">
                                     <?php foreach ($sizes as $s): ?>
                                         <span class="badge" style="background:<?= $color ?>;font-size:11px;">
-                                            <?= e($s['size']) ?> ×<?= (int)$s['total_qty'] ?>
+                                            <?= e(shirtSizeLabel($s['size'])) ?> ×<?= (int)$s['total_qty'] ?>
                                         </span>
                                     <?php endforeach; ?>
                                 </div>
@@ -555,7 +555,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                     <?= e($s['shirt_type']) ?>
                                 </span>
                             </td>
-                            <td><?= e($s['size']) ?></td>
+                            <td><?= e(shirtSizeLabel($s['size'])) ?></td>
                             <td class="text-center fw-600"><?= number_format((int)$s['total_qty']) ?></td>
                             <td class="text-end">RM <?= number_format((float)$s['revenue'], 2) ?></td>
                         </tr>

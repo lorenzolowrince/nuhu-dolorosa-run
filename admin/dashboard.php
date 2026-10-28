@@ -254,7 +254,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                             <tbody>
                                 <?php foreach ($eventShirtSummary as $row): ?>
                                     <tr>
-                                        <td><span class="badge bg-info text-dark"><?= e($row['size']) ?></span></td>
+                                        <td><span class="badge bg-info text-dark"><?= e(shirtSizeLabel($row['size'])) ?></span></td>
                                         <td class="fw-700"><?= $row['total_qty'] ?></td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -276,7 +276,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                             <?php foreach ($shirtSummary as $row): ?>
                                 <tr>
                                     <td><span class="badge bg-dark"><?= e($row['shirt_type']) ?></span></td>
-                                    <td><span class="badge bg-secondary"><?= e($row['size']) ?></span></td>
+                                    <td><span class="badge bg-secondary"><?= e(shirtSizeLabel($row['size'])) ?></span></td>
                                     <td class="fw-700"><?= $row['total_qty'] ?></td>
                                 </tr>
                             <?php endforeach; ?>

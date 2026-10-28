@@ -434,12 +434,12 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-muted small">Event T-Shirt (Included)</div>
-                                <div><span class="badge bg-info text-dark"><?= e($participant['event_shirt_size'] ?? '—') ?></span></div>
+                                <div><span class="badge bg-info text-dark"><?= e(shirtSizeLabel($participant['event_shirt_size'] ?? '—')) ?></span></div>
                             </div>
                             <?php if ($participant['finisher_shirt_size']): ?>
                             <div class="col-sm-6">
                                 <div class="text-muted small">Finisher T-Shirt (Included)</div>
-                                <div><span class="badge bg-warning text-dark"><?= e($participant['finisher_shirt_size']) ?></span></div>
+                                <div><span class="badge bg-warning text-dark"><?= e(shirtSizeLabel($participant['finisher_shirt_size'])) ?></span></div>
                             </div>
                             <?php endif; ?>
                             <?php if (!empty($shirtOrders)): ?>
@@ -448,7 +448,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                 <?php foreach ($shirtOrders as $so): ?>
                                     <div class="d-flex align-items-center gap-2 mb-1">
                                         <span class="badge bg-dark"><?= e($so['shirt_type']) ?></span>
-                                        <span class="badge bg-secondary"><?= e($so['size']) ?></span>
+                                        <span class="badge bg-secondary"><?= e(shirtSizeLabel($so['size'])) ?></span>
                                         <span class="text-muted small">× <?= $so['quantity'] ?> = <?= formatMYR((float) $so['total_price']) ?></span>
                                     </div>
                                 <?php endforeach; ?>
@@ -478,7 +478,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                         <label class="form-label small fw-600 mb-1">Included Event T-Shirt</label>
                                         <select name="event_shirt_size" class="form-select form-select-sm" required>
                                             <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                                <option value="<?= $sz ?>" <?= ($participant['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                                <option value="<?= $sz ?>" <?= ($participant['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -488,7 +488,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                         <select name="finisher_shirt_size" class="form-select form-select-sm">
                                             <option value="">— None —</option>
                                             <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                                <option value="<?= $sz ?>" <?= ($participant['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                                <option value="<?= $sz ?>" <?= ($participant['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -511,7 +511,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                         <label class="form-label small fw-600 mb-1">Size</label>
                                         <select name="shirt_size[]" class="form-select form-select-sm">
                                             <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                                <option value="<?= $sz ?>" <?= $so['size'] === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                                <option value="<?= $sz ?>" <?= $so['size'] === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -743,7 +743,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                             <label class="form-label fw-600 small">Event T-Shirt Size <span class="text-danger">*</span></label>
                             <select name="event_shirt_size" class="form-select form-select-sm" required>
                                 <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                    <option value="<?= $sz ?>" <?= ($participant['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                    <option value="<?= $sz ?>" <?= ($participant['event_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -752,7 +752,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                             <select name="finisher_shirt_size" class="form-select form-select-sm">
                                 <option value="">— None —</option>
                                 <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                    <option value="<?= $sz ?>" <?= ($participant['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                    <option value="<?= $sz ?>" <?= ($participant['finisher_shirt_size'] ?? '') === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -778,7 +778,7 @@ include PUBLIC_PATH . '/admin/includes/header.php';
                                 <label class="form-label fw-600 small">Size <span class="text-danger">*</span></label>
                                 <select name="shirt_size[]" class="form-select form-select-sm">
                                     <?php foreach ($SHIRT_SIZES as $sz): ?>
-                                        <option value="<?= $sz ?>" <?= $so['size'] === $sz ? 'selected' : '' ?>><?= $sz ?></option>
+                                        <option value="<?= $sz ?>" <?= $so['size'] === $sz ? 'selected' : '' ?>><?= shirtSizeLabel($sz) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

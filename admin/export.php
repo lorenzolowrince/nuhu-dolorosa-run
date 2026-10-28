@@ -81,7 +81,7 @@ if ($type === 'csv') {
             $r['emergency_contact_number'],
             $r['category_name'],
             $r['distance'],
-            $r['shirt_size'] ?? '',
+            shirtSizeLabel($r['shirt_size'] ?? ''),
             $r['shirt_qty']  ?? '',
             $r['gateway']    ?? '',
             $r['total_amount'] ?? '',
@@ -146,7 +146,7 @@ if ($type === 'shirts') {
         fputcsv($fp, ['(no confirmed registrations)']);
     } else {
         foreach ($eventShirts as $r) {
-            fputcsv($fp, [$r['size'], $r['total']]);
+            fputcsv($fp, [shirtSizeLabel($r['size']), $r['total']]);
         }
     }
 
@@ -159,7 +159,7 @@ if ($type === 'shirts') {
         fputcsv($fp, ['(none)']);
     } else {
         foreach ($finisherShirts as $r) {
-            fputcsv($fp, [$r['size'], $r['total']]);
+            fputcsv($fp, [shirtSizeLabel($r['size']), $r['total']]);
         }
     }
 
@@ -172,7 +172,7 @@ if ($type === 'shirts') {
         fputcsv($fp, ['(no data)']);
     } else {
         foreach ($byCat as $r) {
-            fputcsv($fp, [$r['category'], $r['distance'], $r['size'], $r['total']]);
+            fputcsv($fp, [$r['category'], $r['distance'], shirtSizeLabel($r['size']), $r['total']]);
         }
     }
 

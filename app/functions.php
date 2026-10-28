@@ -120,6 +120,13 @@ function shirtSizeSurcharge(string $size): float
     return 0.0;
 }
 
+// --- Display name for a stored t-shirt size ---
+// The database stores the two smallest sizes as '2X' and 'X'; show them as on the size chart.
+function shirtSizeLabel(?string $size): string
+{
+    return ['2X' => '2XS', 'X' => 'XS'][$size] ?? (string) $size;
+}
+
 // --- Load all event categories ---
 function getActiveCategories(): array
 {
@@ -181,7 +188,7 @@ function shirtOrdersAuditMap(int $participantId): array
     $map = [];
     foreach (Database::fetchAll('SELECT id, shirt_type, size, quantity FROM shirt_orders WHERE participant_id = ? ORDER BY id', [$participantId]) as $s) {
         $type = $s['shirt_type'] ? ucfirst((string) $s['shirt_type']) . ' · ' : '';
-        $map['Extra shirt #' . $s['id']] = $type . $s['size'] . ' × ' . $s['quantity'];
+        $map['Extra shirt #' . $s['id']] = $type . shirtSizeLabel($s['size']) . ' × ' . $s['quantity'];
     }
     return $map;
 }

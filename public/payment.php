@@ -145,7 +145,7 @@ include PUBLIC_PATH . '/includes/header.php';
                                         <dt><?= __('pay_page.distance') ?></dt><dd><?= e($category['distance']) ?></dd>
                                         <dt><?= __('pay_page.reg_fee') ?></dt><dd><?= formatMYR((float)$payment['registration_fee']) ?></dd>
                                         <?php if ($shirt): ?>
-                                            <dt><?= __('pay_page.shirt') ?></dt><dd><?= e($shirt['size']) ?> x<?= $shirt['quantity'] ?></dd>
+                                            <dt><?= __('pay_page.shirt') ?></dt><dd><?= e(shirtSizeLabel($shirt['size'])) ?> x<?= $shirt['quantity'] ?></dd>
                                             <dt><?= __('pay_page.shirt_fee') ?></dt><dd><?= formatMYR((float)$payment['shirt_fee']) ?></dd>
                                         <?php endif; ?>
                                         <dt><?= __('pay_page.pay_method') ?></dt>
