@@ -106,6 +106,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['race_category'] = 'Super Veteran category is available for the 43KM race only.';
     }
 
+    // One registration per person: same IC / passport (ignoring dashes, spaces, case), unless cancelled
+    if (!isset($v->errors()['ic_number']) && $v->get('ic_number') !== '') {
+        $existing = Database::fetchOne(
+            "SELECT id FROM participants
+             WHERE UPPER(REPLACE(REPLACE(ic_number, '-', ''), ' ', '')) = ?
+               AND registration_status <> 'Cancelled'
+             LIMIT 1",
+            [$v->get('ic_number')]
+        );
+        if ($existing) {
+            $errors['ic_number'] = 'This IC / Passport number is already registered. Each person may only register once. If you need help with your registration, please contact the organiser.';
+        }
+    }
+
     $errors = array_merge($v->errors(), $errors);
 
     if (empty($errors)) {
