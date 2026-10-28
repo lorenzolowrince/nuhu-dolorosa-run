@@ -169,6 +169,25 @@ class Validation
         return $this;
     }
 
+    // MyKad (12 digits, dashes/spaces allowed) or passport number (letters/digits as printed).
+    public function icOrPassport(string $field): static
+    {
+        $raw = trim($this->data[$field] ?? '');
+        if ($raw === '') {
+            return $this;
+        }
+        $value = strtoupper(preg_replace('/[\s\-]/', '', $raw));
+        $isMyKad    = preg_match('/^\d{12}$/', $value);
+        $isPassport = preg_match('/^(?=.*[A-Z])[A-Z0-9]{6,20}$/', $value)  // letters + digits
+                   || preg_match('/^\d{6,9}$/', $value);                   // all-digit passports
+        if ($isMyKad || $isPassport) {
+            $this->data[$field] = $value; // normalised: no dashes/spaces, upper case
+        } else {
+            $this->errors[$field] = 'Enter a 12-digit MyKad number (without dashes), or your passport number as printed (6–20 letters and digits).';
+        }
+        return $this;
+    }
+
     public function phone(string $field, string $label = 'Phone number'): static
     {
         $value = $this->data[$field] ?? '';

@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Personal info
     $v->required('full_name',    'Full Name')->maxLength('full_name', 150)
-      ->required('ic_number',    'IC / MyKad Number')->malaysianIC('ic_number')
+      ->required('ic_number',    'IC / MyKad or Passport Number')->icOrPassport('ic_number')
       ->required('contact_number', 'Contact Number')->phone('contact_number')
       ->required('email',        'Email Address')->email('email')
       ->required('gender',       'Gender')->in('gender', ['Male', 'Female'], 'Gender')
